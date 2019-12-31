@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <article></article>
+        <input type="button" value="fetch" onclick="fetchClick()" />
+        <script>
+            function fetchClick() {
+                // html 파일을 서버에게 요청한다.
+                // then: 서버에서 응답이 오면 익명함수를 실행
+                // Asynchronous 비동기적인 실행 > fetch 명령을 실행하고 밑에 console.log(1), console.log(2) 실행
+                // Synchronous 동기적 실행 > fetch 명령 실행하고 응답받아서 익명함수까지 실행한 뒤 아래에 console.log(1), console.log(2) 실행
+
+                // then 안에 있는 함수는 익명함수
+                fetch("html").then(function(response) {
+                    if (response.status === 404) {
+                        alert("Not Found");
+                    } else {
+                        response.text().then(function(text) {
+                            alert(text);
+                            document.querySelector("article").innerHTML = text;
+                        });
+                    }
+                });
+
+                console.log(1);
+                console.log(2);
+            }
+        </script>
+    </body>
+</html>
