@@ -1,66 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Document</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    </head>
-    <body>
-        <input type="button" value="hi" onclick="alert('hi')" />
-        <input type="text" onchange="alert('changed')" />
-        <input type="text" onkeydown="alert('key down!')" />
-        <br />
-        <input type="button" value="night" onclick="nightDayHandler(this)" />
-        <p>JavaScript</p>
-        <ul>
-            <li><a href="">HTML</a></li>
-            <li><a href="">CSS</a></li>
-            <li><a href="">JavaScript</a></li>
-        </ul>
-        <script>
-            var body = {
-                setBackgroundColor: function(color) {
-                    // document.querySelector(
-                    //     "body"
-                    // ).style.backgroundColor = color;
-                    $("body").css("background-color", color);
-                },
-                setColor: function(color) {
-                    // document.querySelector("body").style.color = color;
-                    $("body").css("color", color);
-                }
-            };
-
-            var link = {
-                setColor: function(color) {
-                    // var aArray = document.querySelectorAll("a");
-                    // var i = 0;
-
-                    // while (i < aArray.length) {
-                    //     aArray[i].style.color = color;
-                    //     i = i + 1;
-                    // }
-                    $("a").css("color", color);
-                }
-            };
-
-            function nightDayHandler(self) {
-                if (self.value === "night") {
-                    body.setBackgroundColor("black");
-                    body.setColor("white");
-                    self.value = "day";
-
-                    link.setColor("powderblue");
-                } else {
-                    body.setBackgroundColor("white");
-                    body.setColor("black");
-                    self.value = "night";
-
-                    link.setColor("blue");
-                }
-            }
-        </script>
-    </body>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <input type="button" value="hi" onclick="alert('hi')">
+    <input type="text" onchange="alert('changed')">
+    <input type="text" onkeydown="alert('key down!')">
+  </body>
 </html>
