@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>생활코딩 WEB3 자바스크립트를 이용한 페이스북 로그인</title>
+        <script>
+            var checkLoginStatus = function(response) {
+                console.log(response);
+                if (response.status === "connected") {
+                    document.querySelector("#authBtn").value = "Logout";
+                } else {
+                    document.querySelector("#authBtn").value = "Login";
+                }
+            };
+
+            window.fbAsyncInit = function() {
+                // 초기화
+                FB.init({
+                    appId: "1557049317767885",
+                    cookie: true, // Enable cookies to allow the server to access the session.
+                    xfbml: true, // Parse social plugins on this webpage.
+                    version: "v5.0" // Use this Graph API version for this call.
+                });
+
+                // 로그인 되었는지 아닌지
+                // Called after the JS SDK has been initialized.
+                FB.getLoginStatus(checkLoginStatus);
+            };
+
+            // Load the SDK asynchronously
+            (function(d, s, id) {
+                var js,
+                    fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            })(document, "script", "facebook-jssdk");
+        </script>
+    </head>
+    <body>
+        <input
+            type="button"
+            id="authBtn"
+            value="checking...."
+            onclick="
+            if (this.value === 'Login') {
+                // 현재 로그아웃 상태임
+                FB.login(function(response){
+  // handle the response
+  console.log('login =>', response);
+  checkLoginStatus(response);
+});
+            } else {
+                // 현재 로그인 상태임
+                FB.logout(function(response) {
+   // Person is now logged out
+   console.log('logout =>', response);
+   checkLoginStatus(response);
+});
+            }
+            "
+        />
+    </body>
+</html>
