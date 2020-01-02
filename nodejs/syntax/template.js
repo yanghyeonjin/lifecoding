@@ -1,0 +1,3 @@
+const name = "egoing";
+const letter = `Dear ${name} The World Wide Web (abbreviated WWW or the Web) is\nan information space where documents and other web resources are\nidentified by Uniform Resource Locators (URLs), interlinked by hypertext links, ${name} and can be accessed via the Internet.\n[1] English scientist Tim Berners-Lee invented the World Wide Web in 1989. He wrote the first web browser computer ${name} program in 1990 while employed at CERN in Switzerland.\n[2][3] The Web browser was released outside of CERN in 1991,\nfirst to other research institutions starting in January 1991 and to the general ${name} public on the Internet in August 1991.\n${name}`;
+console.log(letter);
