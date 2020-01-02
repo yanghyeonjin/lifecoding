@@ -10,8 +10,17 @@
                 console.log(response);
                 if (response.status === "connected") {
                     document.querySelector("#authBtn").value = "Logout";
+
+                    /* make the API call */
+                    FB.api("/me", function(response) {
+                        if (response && !response.error) {
+                            /* handle the result */
+                            document.querySelector("#fb_name").innerHTML = `welcome, ${response.name}`;
+                        }
+                    });
                 } else {
                     document.querySelector("#authBtn").value = "Login";
+                    document.querySelector("#fb_name").innerHTML = ``;
                 }
             };
 
@@ -64,5 +73,6 @@
             }
             "
         />
+        <span id="fb_name"></span>
     </body>
 </html>
