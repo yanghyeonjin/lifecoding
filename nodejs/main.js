@@ -3,39 +3,9 @@ var fs = require("fs"); // 파일시스템 모듈을 변수 fs를 통해서 사�
 var url = require("url"); // url 모듈을 변수 url을 통해서 사용할 것이다
 var qs = require("querystring"); // 쿼리스트링 모듈 사용
 
-// 리팩토링 ~!~!
+var template = require("./lib/template.js");
 
-var template = {
-    HTML: function(title, list, body, control) {
-        return `
-        <!doctype html>
-        <html>
-        <head>
-            <title>WEB1 - ${title}</title>
-            <meta charset="utf-8">
-        </head>
-        <body>
-            <h1><a href="/">WEB</a></h1>
-            ${list}
-            ${control}
-            ${body}
-        </body>
-        </html>
-        `;
-    },
-    list: function(filelist) {
-        var list = "<ul>";
-        var i = 0;
-        while (i < filelist.length) {
-            list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-            i = i + 1;
-        }
-        list = list + "</ul>";
-        // console.log(list);
-
-        return list;
-    }
-};
+// 리팩토링 ~!~! 중요 ~~!!!
 
 var app = http.createServer(function(request, response) {
     var _url = request.url;
