@@ -3,7 +3,7 @@ var fs = require("fs"); // 파일시스템 모듈을 변수 fs를 통해서 사�
 var url = require("url"); // url 모듈을 변수 url을 통해서 사용할 것이다
 var qs = require("querystring"); // 쿼리스트링 모듈 사용
 
-function templateHTML(title, list, body) {
+function templateHTML(title, list, body, control) {
     return `
     <!doctype html>
     <html>
@@ -14,7 +14,7 @@ function templateHTML(title, list, body) {
     <body>
         <h1><a href="/">WEB</a></h1>
         ${list}
-        <a href="./create">create</a>
+        ${control}
         ${body}
     </body>
     </html>
@@ -59,7 +59,7 @@ var app = http.createServer(function(request, response) {
                 var title = "Welcome";
                 var description = "Hello, Node.js";
                 const list = templateList(filelist);
-                const template = templateHTML(title, list, `<h2>${title}</h2>${description}`);
+                const template = templateHTML(title, list, `<h2>${title}</h2>${description}`, `<a href="./create">create</a>`);
 
                 response.writeHead(200);
                 response.end(template);
@@ -75,7 +75,7 @@ var app = http.createServer(function(request, response) {
                 fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
                     var title = queryData.id;
                     const list = templateList(filelist);
-                    const template = templateHTML(title, list, `<h2>${title}</h2>${description}`);
+                    const template = templateHTML(title, list, `<h2>${title}</h2>${description}`, `<a href="./create">create</a> <a href="./update?id=${title}">update</a>`);
 
                     response.writeHead(200);
                     response.end(template);
@@ -103,7 +103,8 @@ var app = http.createServer(function(request, response) {
                     <input type="submit" />
                 </p>
             </form>
-            `
+            `,
+                ""
             );
 
             response.writeHead(200);
