@@ -1,3 +1,4 @@
+console.log("Hello no daemon!");
 var http = require("http");
 var fs = require("fs"); // 파일시스템 모듈을 변수 fs를 통해서 사용할 것이다
 var url = require("url"); // url 모듈을 변수 url을 통해서 사용할 것이다
