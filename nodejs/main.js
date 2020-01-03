@@ -2,9 +2,9 @@ var http = require("http");
 var fs = require("fs"); // 파일시스템 모듈을 변수 fs를 통해서 사용할 것이다
 var url = require("url"); // url 모듈을 변수 url을 통해서 사용할 것이다
 var qs = require("querystring"); // 쿼리스트링 모듈 사용
-var path = require("path");
-
 var template = require("./lib/template.js");
+var path = require("path");
+var sanitizeHtml = require("sanitize-html");
 
 // 리팩토링 ~!~! 중요 ~~!!!
 
@@ -51,8 +51,10 @@ var app = http.createServer(function(request, response) {
                 // 쿼리 스트링에 따라 해당되는 본문 내용 읽기
                 fs.readFile(`nodejs/data/${filteredID}`, "utf8", function(err, description) {
                     var title = queryData.id;
+                    var sanitizedTitle = sanitizeHtml(title);
+                    var sanitizedDescription = sanitizeHtml(description);
                     const list = template.list(filelist);
-                    const html = template.HTML(title, list, `<h2>${title}</h2>${description}`, `<a href="./create">create</a> <a href="./update?id=${title}">update</a> <form action="./delete_process" method="post"><input type="hidden" name="id" value="${title}"/><input type="submit" value="delete"/></form>`);
+                    const html = template.HTML(sanitizedTitle, list, `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`, `<a href="./create">create</a> <a href="./update?id=${sanitizedTitle}">update</a> <form action="./delete_process" method="post"><input type="hidden" name="id" value="${sanitizedTitle}"/><input type="submit" value="delete"/></form>`);
 
                     response.writeHead(200);
                     response.end(html);
