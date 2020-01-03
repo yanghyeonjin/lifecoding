@@ -1,6 +1,36 @@
 var http = require("http");
 var fs = require("fs"); // 파일시스템 모듈을 변수 fs를 통해서 사용할 것이다
-var url = require("url"); // url 이라는 모듈을 변수 url을 통해서 사용할 것이다
+var url = require("url"); // url 모듈을 변수 url을 통해서 사용할 것이다
+
+function templateHTML(title, list, body) {
+    return `
+    <!doctype html>
+    <html>
+    <head>
+        <title>WEB1 - ${title}</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <h1><a href="/">WEB</a></h1>
+        ${list}
+        ${body}
+    </body>
+    </html>
+    `;
+}
+
+function templateList(filelist) {
+    var list = "<ul>";
+    var i = 0;
+    while (i < filelist.length) {
+        list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+        i = i + 1;
+    }
+    list = list + "</ul>";
+    // console.log(list);
+
+    return list;
+}
 
 var app = http.createServer(function(request, response) {
     var _url = request.url;
@@ -8,7 +38,7 @@ var app = http.createServer(function(request, response) {
     var pathName = url.parse(_url, true).pathname;
 
     //console.log(_url);
-    //console.log(title); // URL 주소 뒷 부분에 직접 쿼리 스트링 넣어주어야 확인 가능
+    //console.log(title); // 브라우저에서 URL 주소 뒷 부분에 직접 쿼리 스트링 넣어주어야 확인 가능
 
     // console.log(url.parse(_url, true));
 
@@ -24,31 +54,9 @@ var app = http.createServer(function(request, response) {
 
                 var title = "Welcome";
                 var description = "Hello, Node.js";
+                const list = templateList(filelist);
+                const template = templateHTML(title, list, `<h2>${title}</h2>${description}`);
 
-                var list = "<ul>";
-                var i = 0;
-                while (i < filelist.length) {
-                    list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-                    i = i + 1;
-                }
-                list = list + "</ul>";
-                // console.log(list);
-
-                const template = `
-                <!doctype html>
-                <html>
-                <head>
-                <title>WEB1 - ${title}</title>
-                <meta charset="utf-8">
-                </head>
-                <body>
-                <h1><a href="/">WEB</a></h1>
-                ${list}
-                <h2>${title}</h2>
-                <div>${description}</div>
-                </body>
-                </html>
-                `;
                 response.writeHead(200);
                 response.end(template);
             });
@@ -59,32 +67,12 @@ var app = http.createServer(function(request, response) {
             fs.readdir("./nodejs/data", function(error, filelist) {
                 // console.log(filelist);
 
-                var list = "<ul>";
-                var i = 0;
-                while (i < filelist.length) {
-                    list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-                    i = i + 1;
-                }
-                list = list + "</ul>";
-
                 // 쿼리 스트링에 따라 해당되는 본문 내용 읽기
                 fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
                     var title = queryData.id;
-                    const template = `
-                    <!doctype html>
-                    <html>
-                    <head>
-                    <title>WEB1 - ${title}</title>
-                    <meta charset="utf-8">
-                    </head>
-                    <body>
-                    <h1><a href="/">WEB</a></h1>
-                    ${list}
-                    <h2>${title}</h2>
-                    <div>${description}</div>
-                    </body>
-                    </html>
-                    `;
+                    const list = templateList(filelist);
+                    const template = templateHTML(title, list, `<h2>${title}</h2>${description}`);
+
                     response.writeHead(200);
                     response.end(template);
                 });
@@ -99,4 +87,4 @@ var app = http.createServer(function(request, response) {
     // console.log(__dirname + _url);
     // response.end(fs.readFileSync(__dirname + _url));
 });
-app.listen(3000);
+app.listen(3000); // 포트번호
