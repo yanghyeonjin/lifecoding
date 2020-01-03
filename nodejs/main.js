@@ -166,6 +166,34 @@ var app = http.createServer(function(request, response) {
                 response.end(template);
             });
         });
+    } else if (pathName === "/update_process") {
+        var body = "";
+
+        request.on("data", function(data) {
+            body = body + data;
+            if (body.length > 1e6) {
+                request.connection.destroy();
+            }
+        });
+
+        request.on("end", function() {
+            var post = qs.parse(body);
+            var title = post.title;
+            var description = post.description;
+            var id = post.id;
+
+            console.log(post);
+
+            fs.rename(`./nodejs/data/${id}`, `./nodejs/data/${title}`, function(err) {
+                // 파일 제목 rename이 끝난 후 실행...
+
+                // 파일 제목 바꾼 후 내용 수정
+                fs.writeFile(`./nodejs/data/${title}`, description, "utf8", function(err) {
+                    response.writeHead(302, { Location: `/?id=${title}` });
+                    response.end();
+                });
+            });
+        });
     } else {
         // 루트가 아닌 곳으로 접속했다면 error
         response.writeHead(404);
