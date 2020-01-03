@@ -128,10 +128,14 @@ var app = http.createServer(function(request, response) {
             var post = qs.parse(body);
             var title = post.title;
             var description = post.description;
-            // console.log(post.title);
+
+            fs.writeFile(`./nodejs/data/${title}`, description, "utf8", function(err) {
+                // 파일 쓰기 끝났을 때 실행
+                // 페이지를 다른 곳으로 리다이렉션
+                response.writeHead(302, { Location: `/?id=${title}` });
+                response.end();
+            });
         });
-        response.writeHead(200);
-        response.end("success");
     } else {
         // 루트가 아닌 곳으로 접속했다면 error
         response.writeHead(404);
