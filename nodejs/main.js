@@ -1,6 +1,7 @@
 var http = require("http");
 var fs = require("fs"); // 파일시스템 모듈을 변수 fs를 통해서 사용할 것이다
 var url = require("url"); // url 모듈을 변수 url을 통해서 사용할 것이다
+var qs = require("querystring"); // 쿼리스트링 모듈 사용
 
 function templateHTML(title, list, body) {
     return `
@@ -91,7 +92,7 @@ var app = http.createServer(function(request, response) {
                 title,
                 list,
                 `
-            <form action="http://localhost:3000/process_create" method="post">
+            <form action="http://localhost:3000/create_process" method="post">
                 <p>
                     <input type="text" name="title" placeholder="title" />
                 </p>
@@ -108,6 +109,29 @@ var app = http.createServer(function(request, response) {
             response.writeHead(200);
             response.end(template);
         });
+    } else if (pathName === "/create_process") {
+        var body = "";
+
+        // post로 전송된 데이터가 많을 경우를 대비해....
+        // 서버 쪽에서 data 조각을 수신할 때 마다 콜백함수 실행
+        request.on("data", function(data) {
+            body = body + data;
+
+            // 용량이 너무 크게 들어오면 서버를 꺼버리는 보안장치
+            if (body.length > 1e6) {
+                request.connection.destroy();
+            }
+        });
+
+        // 데이터가 조각조각 서버로 들어오다가 모든 데이터 수신이 끝났을 때 콜백함수 실행
+        request.on("end", function() {
+            var post = qs.parse(body);
+            var title = post.title;
+            var description = post.description;
+            // console.log(post.title);
+        });
+        response.writeHead(200);
+        response.end("success");
     } else {
         // 루트가 아닌 곳으로 접속했다면 error
         response.writeHead(404);
