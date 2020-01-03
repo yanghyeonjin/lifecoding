@@ -2,6 +2,7 @@ var http = require("http");
 var fs = require("fs"); // 파일시스템 모듈을 변수 fs를 통해서 사용할 것이다
 var url = require("url"); // url 모듈을 변수 url을 통해서 사용할 것이다
 var qs = require("querystring"); // 쿼리스트링 모듈 사용
+var path = require("path");
 
 var template = require("./lib/template.js");
 
@@ -44,8 +45,11 @@ var app = http.createServer(function(request, response) {
             fs.readdir("./nodejs/data", function(error, filelist) {
                 // console.log(filelist);
 
+                // 사용자가 직접 경로를 탐색하여 url을 바꾸었을 때를 대비하여 기본 주소?를 항상 유지하도록...
+                var filteredID = path.parse(queryData.id).base;
+
                 // 쿼리 스트링에 따라 해당되는 본문 내용 읽기
-                fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
+                fs.readFile(`nodejs/data/${filteredID}`, "utf8", function(err, description) {
                     var title = queryData.id;
                     const list = template.list(filelist);
                     const html = template.HTML(title, list, `<h2>${title}</h2>${description}`, `<a href="./create">create</a> <a href="./update?id=${title}">update</a> <form action="./delete_process" method="post"><input type="hidden" name="id" value="${title}"/><input type="submit" value="delete"/></form>`);
@@ -112,7 +116,8 @@ var app = http.createServer(function(request, response) {
         });
     } else if (pathName === "/update") {
         fs.readdir("./nodejs/data", function(error, filelist) {
-            fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
+            var filteredID = path.parse(queryData.id).base;
+            fs.readFile(`nodejs/data/${filteredID}`, "utf8", function(err, description) {
                 var title = queryData.id;
                 const list = template.list(filelist);
                 const html = template.HTML(
@@ -180,8 +185,9 @@ var app = http.createServer(function(request, response) {
         request.on("end", function() {
             var post = qs.parse(body);
             var id = post.id;
+            var filteredID = path.parse(id).base;
 
-            fs.unlink(`./nodejs/data/${id}`, function(err) {
+            fs.unlink(`./nodejs/data/${filteredID}`, function(err) {
                 // 삭제 완료 후
 
                 response.writeHead(302, { Location: "/" });
