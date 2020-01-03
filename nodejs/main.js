@@ -6,7 +6,6 @@ var app = http.createServer(function(request, response) {
     var _url = request.url;
     var queryData = url.parse(_url, true).query;
     var pathName = url.parse(_url, true).pathname;
-    var title = queryData.id;
 
     //console.log(_url);
     //console.log(title); // URL 주소 뒷 부분에 직접 쿼리 스트링 넣어주어야 확인 가능
@@ -14,9 +13,16 @@ var app = http.createServer(function(request, response) {
     // console.log(url.parse(_url, true));
 
     if (pathName === "/") {
-        // 쿼리 스트링에 따라 해당되는 본문 내용 읽기
-        fs.readFile(`nodejs/data/${title}`, "utf8", function(err, description) {
-            const template = `
+        // 루트일 때
+
+        if (queryData.id === undefined) {
+            // queryData.id가 정의되지 않았을 때, 없을 때
+
+            // 쿼리 스트링에 따라 해당되는 본문 내용 읽기
+            fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
+                var title = "Welcome";
+                var description = "Hello, Node.js";
+                const template = `
             <!doctype html>
             <html>
             <head>
@@ -35,9 +41,38 @@ var app = http.createServer(function(request, response) {
             </body>
             </html>
             `;
-            response.writeHead(200);
-            response.end(template);
-        });
+                response.writeHead(200);
+                response.end(template);
+            });
+        } else {
+            // queryData.id가 정의되었을 때, 있을 때
+
+            // 쿼리 스트링에 따라 해당되는 본문 내용 읽기
+            fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
+                var title = queryData.id;
+                const template = `
+            <!doctype html>
+            <html>
+            <head>
+            <title>WEB1 - ${title}</title>
+            <meta charset="utf-8">
+            </head>
+            <body>
+            <h1><a href="/">WEB</a></h1>
+            <ol>
+                <li><a href="/?id=HTML">HTML</a></li>
+                <li><a href="/?id=CSS">CSS</a></li>
+                <li><a href="/?id=JavaScript">JavaScript</a></li>
+            </ol>
+            <h2>${title}</h2>
+            <div>${description}</div>
+            </body>
+            </html>
+            `;
+                response.writeHead(200);
+                response.end(template);
+            });
+        }
     } else {
         // 루트가 아닌 곳으로 접속했다면 error
         response.writeHead(404);
