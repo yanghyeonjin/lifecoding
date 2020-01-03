@@ -92,7 +92,7 @@ var app = http.createServer(function(request, response) {
                 title,
                 list,
                 `
-            <form action="http://localhost:3000/create_process" method="post">
+            <form action="/create_process" method="post">
                 <p>
                     <input type="text" name="title" placeholder="title" />
                 </p>
@@ -135,6 +135,35 @@ var app = http.createServer(function(request, response) {
                 // 페이지를 다른 곳으로 리다이렉션
                 response.writeHead(302, { Location: `/?id=${title}` });
                 response.end();
+            });
+        });
+    } else if (pathName === "/update") {
+        fs.readdir("./nodejs/data", function(error, filelist) {
+            fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
+                var title = queryData.id;
+                const list = templateList(filelist);
+                const template = templateHTML(
+                    title,
+                    list,
+                    `
+                <form action="/update_process" method="post">
+                <input type="hidden" name="id" value="${title}"/>
+                <p>
+                    <input type="text" name="title" placeholder="title" value="${title}" />
+                </p>
+                <p>
+                    <textarea name="description" id="" cols="30" rows="10" placeholder="description">${description}</textarea>
+                </p>
+                <p>
+                    <input type="submit" />
+                </p>
+                </form>
+                `,
+                    `<a href="./create">create</a> <a href="./update?id=${title}">update</a>`
+                );
+
+                response.writeHead(200);
+                response.end(template);
             });
         });
     } else {
