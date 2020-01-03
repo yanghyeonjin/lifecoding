@@ -3,36 +3,39 @@ var fs = require("fs"); // 파일시스템 모듈을 변수 fs를 통해서 사�
 var url = require("url"); // url 모듈을 변수 url을 통해서 사용할 것이다
 var qs = require("querystring"); // 쿼리스트링 모듈 사용
 
-function templateHTML(title, list, body, control) {
-    return `
-    <!doctype html>
-    <html>
-    <head>
-        <title>WEB1 - ${title}</title>
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <h1><a href="/">WEB</a></h1>
-        ${list}
-        ${control}
-        ${body}
-    </body>
-    </html>
-    `;
-}
+// 리팩토링 ~!~!
 
-function templateList(filelist) {
-    var list = "<ul>";
-    var i = 0;
-    while (i < filelist.length) {
-        list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-        i = i + 1;
+var template = {
+    HTML: function(title, list, body, control) {
+        return `
+        <!doctype html>
+        <html>
+        <head>
+            <title>WEB1 - ${title}</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+            <h1><a href="/">WEB</a></h1>
+            ${list}
+            ${control}
+            ${body}
+        </body>
+        </html>
+        `;
+    },
+    list: function(filelist) {
+        var list = "<ul>";
+        var i = 0;
+        while (i < filelist.length) {
+            list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+            i = i + 1;
+        }
+        list = list + "</ul>";
+        // console.log(list);
+
+        return list;
     }
-    list = list + "</ul>";
-    // console.log(list);
-
-    return list;
-}
+};
 
 var app = http.createServer(function(request, response) {
     var _url = request.url;
@@ -58,11 +61,11 @@ var app = http.createServer(function(request, response) {
 
                 var title = "Welcome";
                 var description = "Hello, Node.js";
-                const list = templateList(filelist);
-                const template = templateHTML(title, list, `<h2>${title}</h2>${description}`, `<a href="./create">create</a>`);
+                const list = template.list(filelist);
+                const html = template.HTML(title, list, `<h2>${title}</h2>${description}`, `<a href="./create">create</a>`);
 
                 response.writeHead(200);
-                response.end(template);
+                response.end(html);
             });
         } else {
             // queryData.id가 정의되었을 때, 있을 때
@@ -74,11 +77,11 @@ var app = http.createServer(function(request, response) {
                 // 쿼리 스트링에 따라 해당되는 본문 내용 읽기
                 fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
                     var title = queryData.id;
-                    const list = templateList(filelist);
-                    const template = templateHTML(title, list, `<h2>${title}</h2>${description}`, `<a href="./create">create</a> <a href="./update?id=${title}">update</a> <form action="./delete_process" method="post"><input type="hidden" name="id" value="${title}"/><input type="submit" value="delete"/></form>`);
+                    const list = template.list(filelist);
+                    const html = template.HTML(title, list, `<h2>${title}</h2>${description}`, `<a href="./create">create</a> <a href="./update?id=${title}">update</a> <form action="./delete_process" method="post"><input type="hidden" name="id" value="${title}"/><input type="submit" value="delete"/></form>`);
 
                     response.writeHead(200);
-                    response.end(template);
+                    response.end(html);
                 });
             });
         }
@@ -87,8 +90,8 @@ var app = http.createServer(function(request, response) {
             // console.log(filelist);
 
             var title = "WEB - create";
-            const list = templateList(filelist);
-            const template = templateHTML(
+            const list = template.list(filelist);
+            const html = template.HTML(
                 title,
                 list,
                 `
@@ -108,7 +111,7 @@ var app = http.createServer(function(request, response) {
             );
 
             response.writeHead(200);
-            response.end(template);
+            response.end(html);
         });
     } else if (pathName === "/create_process") {
         var body = "";
@@ -141,8 +144,8 @@ var app = http.createServer(function(request, response) {
         fs.readdir("./nodejs/data", function(error, filelist) {
             fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
                 var title = queryData.id;
-                const list = templateList(filelist);
-                const template = templateHTML(
+                const list = template.list(filelist);
+                const html = template.HTML(
                     title,
                     list,
                     `
@@ -163,7 +166,7 @@ var app = http.createServer(function(request, response) {
                 );
 
                 response.writeHead(200);
-                response.end(template);
+                response.end(html);
             });
         });
     } else if (pathName === "/update_process") {
