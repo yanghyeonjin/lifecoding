@@ -18,59 +18,76 @@ var app = http.createServer(function(request, response) {
         if (queryData.id === undefined) {
             // queryData.id가 정의되지 않았을 때, 없을 때
 
-            // 쿼리 스트링에 따라 해당되는 본문 내용 읽기
-            fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
+            // 특정 폴더에 있는 파일 목록 읽어오기
+            fs.readdir("./nodejs/data", function(error, filelist) {
+                // console.log(filelist);
+
                 var title = "Welcome";
                 var description = "Hello, Node.js";
+
+                var list = "<ul>";
+                var i = 0;
+                while (i < filelist.length) {
+                    list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+                    i = i + 1;
+                }
+                list = list + "</ul>";
+                // console.log(list);
+
                 const template = `
-            <!doctype html>
-            <html>
-            <head>
-            <title>WEB1 - ${title}</title>
-            <meta charset="utf-8">
-            </head>
-            <body>
-            <h1><a href="/">WEB</a></h1>
-            <ol>
-                <li><a href="/?id=HTML">HTML</a></li>
-                <li><a href="/?id=CSS">CSS</a></li>
-                <li><a href="/?id=JavaScript">JavaScript</a></li>
-            </ol>
-            <h2>${title}</h2>
-            <div>${description}</div>
-            </body>
-            </html>
-            `;
+                <!doctype html>
+                <html>
+                <head>
+                <title>WEB1 - ${title}</title>
+                <meta charset="utf-8">
+                </head>
+                <body>
+                <h1><a href="/">WEB</a></h1>
+                ${list}
+                <h2>${title}</h2>
+                <div>${description}</div>
+                </body>
+                </html>
+                `;
                 response.writeHead(200);
                 response.end(template);
             });
         } else {
             // queryData.id가 정의되었을 때, 있을 때
 
-            // 쿼리 스트링에 따라 해당되는 본문 내용 읽기
-            fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
-                var title = queryData.id;
-                const template = `
-            <!doctype html>
-            <html>
-            <head>
-            <title>WEB1 - ${title}</title>
-            <meta charset="utf-8">
-            </head>
-            <body>
-            <h1><a href="/">WEB</a></h1>
-            <ol>
-                <li><a href="/?id=HTML">HTML</a></li>
-                <li><a href="/?id=CSS">CSS</a></li>
-                <li><a href="/?id=JavaScript">JavaScript</a></li>
-            </ol>
-            <h2>${title}</h2>
-            <div>${description}</div>
-            </body>
-            </html>
-            `;
-                response.writeHead(200);
-                response.end(template);
+            // 특정 폴더에 있는 파일 목록 읽어오기
+            fs.readdir("./nodejs/data", function(error, filelist) {
+                // console.log(filelist);
+
+                var list = "<ul>";
+                var i = 0;
+                while (i < filelist.length) {
+                    list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+                    i = i + 1;
+                }
+                list = list + "</ul>";
+
+                // 쿼리 스트링에 따라 해당되는 본문 내용 읽기
+                fs.readFile(`nodejs/data/${queryData.id}`, "utf8", function(err, description) {
+                    var title = queryData.id;
+                    const template = `
+                    <!doctype html>
+                    <html>
+                    <head>
+                    <title>WEB1 - ${title}</title>
+                    <meta charset="utf-8">
+                    </head>
+                    <body>
+                    <h1><a href="/">WEB</a></h1>
+                    ${list}
+                    <h2>${title}</h2>
+                    <div>${description}</div>
+                    </body>
+                    </html>
+                    `;
+                    response.writeHead(200);
+                    response.end(template);
+                });
             });
         }
     } else {
