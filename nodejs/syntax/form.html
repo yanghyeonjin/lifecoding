@@ -1,0 +1,14 @@
+<form action="http://localhost:3000/process_create" method="post">
+    <!-- 서버로 데이터 보낼 때에는 무조건 post !~!~! -->
+    <!-- get 방식으로 서버에 보내면 쿼리스트링이 포함된 url이 표시가 됨 -->
+    <!-- 그 url을 누군가에게 복사해서 보낸다면 다른사람이 서버에 들어와서 글을 수정, 삭제 할 수 있음.... -->
+    <p>
+        <input type="text" name="title" />
+    </p>
+    <p>
+        <textarea name="description" id="" cols="30" rows="10"></textarea>
+    </p>
+    <p>
+        <input type="submit" />
+    </p>
+</form>
