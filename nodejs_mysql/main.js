@@ -24,7 +24,7 @@ var app = http.createServer(function(request, response) {
     var pathname = url.parse(_url, true).pathname;
     if (pathname === "/") {
         if (queryData.id === undefined) {
-            db.query(`SELECT * FROM topic`, function(error, topics, fields) {
+            db.query(`SELECT * FROM topic`, function(error, topics) {
                 var title = "Welcome";
                 var description = "Hello, Node.js";
                 var list = template.list(topics);
@@ -34,30 +34,58 @@ var app = http.createServer(function(request, response) {
                 response.end(html);
             });
         } else {
-            fs.readdir("./data", function(error, filelist) {
-                var filteredId = path.parse(queryData.id).base;
-                fs.readFile(`data/${filteredId}`, "utf8", function(err, description) {
-                    var title = queryData.id;
-                    var sanitizedTitle = sanitizeHtml(title);
-                    var sanitizedDescription = sanitizeHtml(description, {
-                        allowedTags: ["h1"]
-                    });
-                    var list = template.list(filelist);
+            db.query(`SELECT * FROM topic`, function(error, topics, fields) {
+                if (error) {
+                    throw error; // 에러가 있을 경우, 다음 코드를 진행하지 않고 에러를 console에 출력하고 앱을 즉시 종료.
+                }
+                db.query(`SELECT * FROM topic WHERE id=?`, [queryData.id], function(error2, topic) {
+                    if (error2) {
+                        throw error2;
+                    }
+                    console.log();
+                    var title = topic[0].title;
+                    var description = topic[0].description;
+                    var list = template.list(topics);
                     var html = template.HTML(
-                        sanitizedTitle,
+                        title,
                         list,
-                        `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
+                        `<h2>${title}</h2>${description}`,
                         ` <a href="/create">create</a>
-                <a href="/update?id=${sanitizedTitle}">update</a>
-                <form action="delete_process" method="post">
-                  <input type="hidden" name="id" value="${sanitizedTitle}">
-                  <input type="submit" value="delete">
-                </form>`
+                    <a href="/update?id=${queryData.id}">update</a>
+                    <form action="delete_process" method="post">
+                      <input type="hidden" name="id" value="${queryData.id}">
+                      <input type="submit" value="delete">
+                    </form>`
                     );
+
                     response.writeHead(200);
                     response.end(html);
                 });
             });
+            // fs.readdir("./data", function(error, filelist) {
+            //     var filteredId = path.parse(queryData.id).base;
+            //     fs.readFile(`data/${filteredId}`, "utf8", function(err, description) {
+            //         var title = queryData.id;
+            //         var sanitizedTitle = sanitizeHtml(title);
+            //         var sanitizedDescription = sanitizeHtml(description, {
+            //             allowedTags: ["h1"]
+            //         });
+            //         var list = template.list(filelist);
+            //         var html = template.HTML(
+            //             sanitizedTitle,
+            //             list,
+            //             `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
+            //             ` <a href="/create">create</a>
+            //     <a href="/update?id=${sanitizedTitle}">update</a>
+            //     <form action="delete_process" method="post">
+            //       <input type="hidden" name="id" value="${sanitizedTitle}">
+            //       <input type="submit" value="delete">
+            //     </form>`
+            //         );
+            //         response.writeHead(200);
+            //         response.end(html);
+            //     });
+            // });
         }
     } else if (pathname === "/create") {
         fs.readdir("./data", function(error, filelist) {
