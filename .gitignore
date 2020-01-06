@@ -105,4 +105,7 @@ public/
 # Ignore all local history of files
 .history
 
+# secret key
+secret_key.js
+
 # End of https://www.gitignore.io/api/node,visualstudiocode
