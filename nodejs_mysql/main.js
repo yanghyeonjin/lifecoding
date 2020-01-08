@@ -138,6 +138,9 @@ var app = http.createServer(function(request, response) {
             var post = qs.parse(body);
 
             db.query(`UPDATE topic SET title = ?, description = ?, author_id = 1 WHERE id = ?`, [post.title, post.description, post.id], function(error, result) {
+                if (error) {
+                    throw error;
+                }
                 response.writeHead(302, { Location: `/?id=${post.id}` });
                 response.end();
             });
@@ -149,9 +152,11 @@ var app = http.createServer(function(request, response) {
         });
         request.on("end", function() {
             var post = qs.parse(body);
-            var id = post.id;
-            var filteredId = path.parse(id).base;
-            fs.unlink(`data/${filteredId}`, function(error) {
+
+            db.query(`DELETE from topic WHERE id = ?`, [post.id], function(error, result) {
+                if (error) {
+                    throw error;
+                }
                 response.writeHead(302, { Location: `/` });
                 response.end();
             });
