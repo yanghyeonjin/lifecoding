@@ -38,7 +38,7 @@ var app = http.createServer(function(request, response) {
                 if (error) {
                     throw error; // 에러가 있을 경우, 다음 코드를 진행하지 않고 에러를 console에 출력하고 앱을 즉시 종료.
                 }
-                db.query(`SELECT * FROM topic WHERE id=?`, [queryData.id], function(error2, topic) {
+                db.query(`SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.id WHERE topic.id=?`, [queryData.id], function(error2, topic) {
                     if (error2) {
                         throw error2;
                     }
@@ -48,7 +48,8 @@ var app = http.createServer(function(request, response) {
                     var html = template.HTML(
                         title,
                         list,
-                        `<h2>${title}</h2>${description}`,
+                        `<h2>${title}</h2>${description}
+                        <p>by ${topic[0].name}</p>`,
                         ` <a href="/create">create</a>
                     <a href="/update?id=${queryData.id}">update</a>
                     <form action="delete_process" method="post">
