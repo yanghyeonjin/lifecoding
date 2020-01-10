@@ -1,8 +1,5 @@
 var http = require("http");
 var url = require("url");
-var qs = require("querystring");
-var template = require("./lib/template.js");
-var db = require("./lib/db"); // 디비 연결한 파일
 var topic = require("./lib/topic");
 var author = require("./lib/author");
 
