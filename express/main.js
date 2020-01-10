@@ -1,8 +1,11 @@
-const express = require("express");
-const app = express();
-const port = 3000;
+var express = require("express"); // express 모듈을 load, express 변수로 사용
+var app = express(); // 변수 express는 함수
+var port = 3000;
 
-app.get("/", (req, res) => res.send("Hello World!"));
+// app.get('/', function(req, res) {return res.send("Hello World!")})
+// route, routing
+// 갈림길에서 방향을 잡는 것. 사용자들이 여러 path로 들어올 때 그에 따른 응답을 해주는 것.
+app.get("/", (req, res) => res.send("Hello World!")); // app.get(path, callback)
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
