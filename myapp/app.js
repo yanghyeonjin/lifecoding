@@ -1,3 +1,19 @@
+// express generator 사용하기 (커밋 내용 말고 아래 주석을 참고 할 것)
+// Node 서버가 없다면 서버 설치부터..
+
+// 1. express-generator 모듈 설치
+// npm install -g express-generator
+
+// 2. (프로젝트 생성 할 곳으로 이동 후) 프로젝트 생성 및 템플릿 엔진 ejs 설정
+// express 프로젝트폴더이름 --view=ejs
+
+// 3. 생성된 프로젝트 폴더로 이동 후 필요한 module 설치
+// cd 프로젝트폴더이름
+// npm install (package.json 파일을 참고하여 자동으로 설치해준다.)
+
+// 4. Node 서버 실행
+// npm start
+
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
