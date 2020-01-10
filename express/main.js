@@ -7,8 +7,10 @@ var path = require("path");
 var sanitizeHtml = require("sanitize-html");
 var qs = require("querystring");
 var bodyParser = require("body-parser");
+var compression = require("compression");
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(compression());
 
 // app.get(path, callback)
 // app.get('/', function(req, res) {return res.send("Hello World!")})
