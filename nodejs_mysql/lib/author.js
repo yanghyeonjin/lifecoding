@@ -119,3 +119,28 @@ exports.update_process = function(request, response) {
         });
     });
 };
+
+exports.delete_process = function(request, response) {
+    var body = "";
+    request.on("data", function(data) {
+        body = body + data;
+    });
+    request.on("end", function() {
+        var post = qs.parse(body);
+
+        // 저자가 남긴 topic 부터 지운다
+        db.query(`DELETE from topic WHERE author_id = ?`, [post.id], function(error, result) {
+            if (error) {
+                throw error;
+            }
+            // 그 다음에 저자를 지운다
+            db.query(`DELETE from author WHERE id = ?`, [post.id], function(error2, result2) {
+                if (error2) {
+                    throw error2;
+                }
+                response.writeHead(302, { Location: `/author` });
+                response.end();
+            });
+        });
+    });
+};
