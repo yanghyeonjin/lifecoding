@@ -1,22 +1,8 @@
 var http = require("http");
-var fs = require("fs");
 var url = require("url");
 var qs = require("querystring");
 var template = require("./lib/template.js");
-var path = require("path");
-var sanitizeHtml = require("sanitize-html");
-var mysql = require("mysql");
-var secret_key = require("./secret_key.js");
-
-var db = mysql.createConnection({
-    host: "localhost",
-    user: `${secret_key.mysql_user}`,
-    password: `${secret_key.mysql_password}`,
-    database: "opentutorials",
-    port: 3307
-});
-
-db.connect();
+var db = require("./lib/db"); // 디비 연결한 파일
 
 var app = http.createServer(function(request, response) {
     var _url = request.url;
