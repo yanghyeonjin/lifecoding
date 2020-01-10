@@ -2,12 +2,12 @@ var express = require("express"); // express 모듈을 load, express 변수로 �
 var app = express(); // 변수 express는 함수
 var port = 3000;
 var fs = require("fs");
-
-var qs = require("querystring");
 var bodyParser = require("body-parser");
 var compression = require("compression");
 var topicRouter = require("./routes/topic");
 var indexRouter = require("./routes/index");
+var helmet = require("helmet");
+app.use(helmet()); // 기본적으로 사용한다고 생각
 
 // public 디렉토리 안에서 정적파일을 찾겠다.
 // url로 localhost:3000/images/파일이름
