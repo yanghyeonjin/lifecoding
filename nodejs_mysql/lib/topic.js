@@ -45,6 +45,36 @@ exports.page = function(request, response) {
             response.writeHead(200);
             response.end(html);
         });
+
+        // 누군가 url 마지막에 ';drop table topic;' 이라고 넣으면 공격당할 수 있다.
+        // 그렇지만 아래 코드로 인해 공격한 sql문은 따옴표 안으로 들어가게 되어 문자로 인식된다.
+        // SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.id WHERE topic.id = '1;drop table topic;' 이렇게 들어가게 된다.
+        // 아래 처럼 물음표를 통해 데이터를 치환하는 방식을 사용해야 한다.
+        // 방어 성공
+        var query = db.query(`SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.id WHERE topic.id=?`, [queryData.id], function(error2, topic) {
+            if (error2) {
+                throw error2;
+            }
+            var title = topic[0].title;
+            var description = topic[0].description;
+            var list = template.list(topics);
+            var html = template.HTML(
+                title,
+                list,
+                `<h2>${title}</h2>${description}
+                <p>by ${topic[0].name}</p>`,
+                ` <a href="/create">create</a>
+            <a href="/update?id=${queryData.id}">update</a>
+            <form action="delete_process" method="post">
+              <input type="hidden" name="id" value="${queryData.id}">
+              <input type="submit" value="delete">
+            </form>`
+            );
+
+            response.writeHead(200);
+            response.end(html);
+        });
+        console.log(query.sql);
     });
 };
 
