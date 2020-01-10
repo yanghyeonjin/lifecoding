@@ -5,22 +5,23 @@ var fs = require("fs");
 var template = require("./lib/template.js");
 var path = require("path");
 var sanitizeHtml = require("sanitize-html");
+var qs = require("querystring");
 
 // app.get(path, callback)
 // app.get('/', function(req, res) {return res.send("Hello World!")})
 // route, routing
 // 갈림길에서 방향을 잡는 것. 사용자들이 여러 path로 들어올 때 그에 따른 응답을 해주는 것.
-app.get("/", (request, response) =>
+app.get("/", (request, response) => {
     fs.readdir("./data", function(error, filelist) {
         var title = "Welcome";
         var description = "Hello, Node.js";
         var list = template.list(filelist);
         var html = template.HTML(title, list, `<h2>${title}</h2>${description}`, `<a href="/create">create</a>`);
         response.send(html);
-    })
-);
+    });
+});
 
-app.get("/page/:pageID", (request, response) =>
+app.get("/page/:pageID", (request, response) => {
     fs.readdir("./data", function(error, filelist) {
         var filteredId = path.parse(request.params.pageID).base;
         fs.readFile(`data/${filteredId}`, "utf8", function(err, description) {
@@ -35,16 +36,56 @@ app.get("/page/:pageID", (request, response) =>
                 list,
                 `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
                 ` <a href="/create">create</a>
-                  <a href="/update?id=${sanitizedTitle}">update</a>
-                  <form action="delete_process" method="post">
-                    <input type="hidden" name="id" value="${sanitizedTitle}">
-                    <input type="submit" value="delete">
-                  </form>`
+              <a href="/update?id=${sanitizedTitle}">update</a>
+              <form action="delete_process" method="post">
+                <input type="hidden" name="id" value="${sanitizedTitle}">
+                <input type="submit" value="delete">
+              </form>`
             );
             response.send(html);
         });
-    })
-);
+    });
+});
+
+app.get("/create", (request, response) => {
+    fs.readdir("./data", function(error, filelist) {
+        var title = "WEB - create";
+        var list = template.list(filelist);
+        var html = template.HTML(
+            title,
+            list,
+            `
+        <form action="/create_process" method="post">
+          <p><input type="text" name="title" placeholder="title"></p>
+          <p>
+            <textarea name="description" placeholder="description"></textarea>
+          </p>
+          <p>
+            <input type="submit">
+          </p>
+        </form>
+        `,
+            ""
+        );
+        response.send(html);
+    });
+});
+
+app.post("/create_process", (request, response) => {
+    var body = "";
+    request.on("data", function(data) {
+        body = body + data;
+    });
+    request.on("end", function() {
+        var post = qs.parse(body);
+        var title = post.title;
+        var description = post.description;
+        fs.writeFile(`data/${title}`, description, "utf8", function(err) {
+            response.writeHead(302, { Location: `/?id=${title}` });
+            response.end();
+        });
+    });
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
@@ -52,7 +93,7 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
-var qs = require('querystring');
+
 var template = require('./lib/template.js');
 
 
@@ -68,37 +109,9 @@ var app = http.createServer(function(request,response){
         
       }
     } else if(pathname === '/create'){
-      fs.readdir('./data', function(error, filelist){
-        var title = 'WEB - create';
-        var list = template.list(filelist);
-        var html = template.HTML(title, list, `
-          <form action="/create_process" method="post">
-            <p><input type="text" name="title" placeholder="title"></p>
-            <p>
-              <textarea name="description" placeholder="description"></textarea>
-            </p>
-            <p>
-              <input type="submit">
-            </p>
-          </form>
-        `, '');
-        response.writeHead(200);
-        response.end(html);
-      });
+      
     } else if(pathname === '/create_process'){
-      var body = '';
-      request.on('data', function(data){
-          body = body + data;
-      });
-      request.on('end', function(){
-          var post = qs.parse(body);
-          var title = post.title;
-          var description = post.description;
-          fs.writeFile(`data/${title}`, description, 'utf8', function(err){
-            response.writeHead(302, {Location: `/?id=${title}`});
-            response.end();
-          })
-      });
+      
     } else if(pathname === '/update'){
       fs.readdir('./data', function(error, filelist){
         var filteredId = path.parse(queryData.id).base;
