@@ -2,6 +2,7 @@ var db = require("./db"); // 디비 연결한 파일
 var template = require("./template");
 var url = require("url");
 var qs = require("querystring");
+var sanitizeHtml = require("sanitize-html");
 
 exports.home = function(request, response) {
     db.query(`SELECT * FROM topic`, function(error, topics) {
@@ -29,11 +30,18 @@ exports.page = function(request, response) {
             var title = topic[0].title;
             var description = topic[0].description;
             var list = template.list(topics);
+
+            // sanitize-html 모듈을 사용하면 자바스크립트 공격이 들어왔을 때 해당 부분을 삭제해준다.
+            // title: test, description: <script>alert('1')</script>, author: hyeonjin
+            // 위 상태로 저장하면 db에는 자바스크립트문이 저장되어있지만 페이지에 출력 되지 않는다.
+            // 나머지 출력해야하는 부분도 확인해서 바꿔주어야 한다.
+            // 사용자가 입력한 정보는 모~~~~두 살균 해야한다.
+            // 입력 할 때 방지할 수 있는 방법도 생각해보자 > 살균된 데이터만 디비에 저장
             var html = template.HTML(
                 title,
                 list,
-                `<h2>${title}</h2>${description}
-                <p>by ${topic[0].name}</p>`,
+                `<h2>${sanitizeHtml(title)}</h2>${sanitizeHtml(description)}
+                <p>by ${sanitizeHtml(topic[0].name)}</p>`,
                 ` <a href="/create">create</a>
             <a href="/update?id=${queryData.id}">update</a>
             <form action="delete_process" method="post">
