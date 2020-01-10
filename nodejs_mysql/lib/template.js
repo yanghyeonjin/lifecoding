@@ -41,15 +41,24 @@ module.exports = {
         return `<select name="author">${tag}</select>`;
     },
     authorTable: function(authors) {
-        var authorList = `<table><tbody>`;
+        var authorList = `
+        <table>
+            <thead>
+                <tr>
+                    <td>author name</td>
+                    <td>author profile </td>
+                    <td colspan="2">control</td>
+                </tr>
+            </thead>
+            <tbody>`;
         var i = 0;
 
         while (i < authors.length) {
             authorList += `
                 <tr>
                     <td>${authors[i].name}</td>
-                    <td>${authors[0].profile}</td>
-                    <td>update</td>
+                    <td>${authors[i].profile}</td>
+                    <td><a href="/author/update?id=${authors[i].id}">update</a></td>
                     <td>delete</td>
                 </tr>`;
             i++;
