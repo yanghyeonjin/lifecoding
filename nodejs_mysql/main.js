@@ -18,23 +18,26 @@ var app = http.createServer(function(request, response) {
             // 상세보기
             topic.page(request, response);
         }
-    } else if (pathname === "/create") {
-        // 내용 추가 페이지
+    }
+
+    // topic CRUD
+    else if (pathname === "/create") {
         topic.create(request, response);
     } else if (pathname === "/create_process") {
-        // 내용 추가한 것 저장
         topic.create_process(request, response);
     } else if (pathname === "/update") {
-        // 내용 수정 페이지
         topic.update(request, response);
     } else if (pathname === "/update_process") {
-        // 내용 수정 저장하기
         topic.update_process(request, response);
     } else if (pathname === "/delete_process") {
-        // 내용 삭제
         topic.delete_process(request, response);
-    } else if (pathname === "/author") {
+    }
+
+    // author CRUD
+    else if (pathname === "/author") {
         author.home(request, response);
+    } else if (pathname === "/author/create_process") {
+        author.create_process(request, response);
     } else {
         response.writeHead(404);
         response.end("Not found");
