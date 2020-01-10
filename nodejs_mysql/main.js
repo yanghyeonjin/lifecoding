@@ -24,75 +24,14 @@ var app = http.createServer(function(request, response) {
         // 내용 추가한 것 저장
         topic.create_process(request, response);
     } else if (pathname === "/update") {
-        db.query(`SELECT * FROM topic`, function(error, topics) {
-            if (error) {
-                throw error;
-            }
-            db.query(`SELECT * FROM topic WHERE id=?`, [queryData.id], function(error2, topic) {
-                if (error2) {
-                    throw error2;
-                }
-                db.query(`SELECT * FROM author`, function(error3, authors) {
-                    if (error3) {
-                        throw error3;
-                    }
-                    var list = template.list(topics);
-                    var html = template.HTML(
-                        topic[0].title,
-                        list,
-                        `<form action="/update_process" method="post">
-                    <input type="hidden" name="id" value="${topic[0].id}">
-                    <p><input type="text" name="title" placeholder="title" value="${topic[0].title}"></p>
-                    <p>
-                      <textarea name="description" placeholder="description">${topic[0].description}</textarea>
-                    </p>
-                    <p>
-                        ${template.authorSelect(authors, topic[0].author_id)}
-                    </p>
-                    <p>
-                      <input type="submit">
-                    </p>
-                  </form>`,
-                        `<a href="/create">create</a> <a href="/update?id=${topic[0].id}">update</a>`
-                    );
-
-                    response.writeHead(200);
-                    response.end(html);
-                });
-            });
-        });
+        // 내용 수정 페이지
+        topic.update(request, response);
     } else if (pathname === "/update_process") {
-        var body = "";
-        request.on("data", function(data) {
-            body = body + data;
-        });
-        request.on("end", function() {
-            var post = qs.parse(body);
-
-            db.query(`UPDATE topic SET title = ?, description = ?, author_id = ? WHERE id = ?`, [post.title, post.description, post.author, post.id], function(error, result) {
-                if (error) {
-                    throw error;
-                }
-                response.writeHead(302, { Location: `/?id=${post.id}` });
-                response.end();
-            });
-        });
+        // 내용 수정 저장하기
+        topic.update_process(request, response);
     } else if (pathname === "/delete_process") {
-        var body = "";
-        request.on("data", function(data) {
-            body = body + data;
-        });
-        request.on("end", function() {
-            var post = qs.parse(body);
-
-            db.query(`DELETE from topic WHERE id = ?`, [post.id], function(error, result) {
-                if (error) {
-                    throw error;
-                }
-                response.writeHead(302, { Location: `/` });
-                response.end();
-            });
-        });
+        // 내용 삭제
+        topic.delete_process(request, response);
     } else {
         response.writeHead(404);
         response.end("Not found");
