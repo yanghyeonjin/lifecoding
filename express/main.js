@@ -19,6 +19,8 @@ app.get("/", (request, response) =>
     })
 );
 
+app.get("/page/:pageID", (request, response) => response.send(request.params));
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 /*
