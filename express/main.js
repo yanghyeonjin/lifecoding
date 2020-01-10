@@ -37,27 +37,31 @@ app.get("/", (request, response) => {
     response.send(html);
 });
 
-app.get("/page/:pageID", (request, response) => {
+app.get("/page/:pageID", (request, response, next) => {
     var filteredId = path.parse(request.params.pageID).base;
     fs.readFile(`data/${filteredId}`, "utf8", function(err, description) {
-        var title = request.params.pageID;
-        var sanitizedTitle = sanitizeHtml(title);
-        var sanitizedDescription = sanitizeHtml(description, {
-            allowedTags: ["h1"]
-        });
-        var list = template.list(request.list);
-        var html = template.HTML(
-            sanitizedTitle,
-            list,
-            `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
-            ` <a href="/create">create</a>
+        if (err) {
+            next(err);
+        } else {
+            var title = request.params.pageID;
+            var sanitizedTitle = sanitizeHtml(title);
+            var sanitizedDescription = sanitizeHtml(description, {
+                allowedTags: ["h1"]
+            });
+            var list = template.list(request.list);
+            var html = template.HTML(
+                sanitizedTitle,
+                list,
+                `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
+                ` <a href="/create">create</a>
               <a href="/update/${sanitizedTitle}">update</a>
               <form action="/delete_process" method="post">
                 <input type="hidden" name="id" value="${sanitizedTitle}">
                 <input type="submit" value="delete">
               </form>`
-        );
-        response.send(html);
+            );
+            response.send(html);
+        }
     });
 });
 
@@ -137,6 +141,21 @@ app.post("/delete_process", (request, response) => {
     fs.unlink(`data/${filteredId}`, function(error) {
         response.redirect(`/`);
     });
+});
+
+// 404 에러에 대한 커스텀 에러 핸들링
+// 미들웨어는 순차적으로 실행, 404 에러는 페이지를 못 찾았을 때 나오는 에러
+// 코드 맨 위부터 순차적으로 실행하다가 더 이상 못 찾을 때 보여주어야 하기 때문에 마지막에...
+// 코드 중에 next(err)가 있을 땐 실행 안 됨.
+app.use(function(req, res, next) {
+    res.status(404).send("Sorry cant find that!");
+});
+
+// 모든 에러에 대한 커스텀 에러 핸들링
+// 커스텀 에러 핸들링을 작성하게 될 때, next(err)이 호출 될 때 default 에러 핸들링은 모두 무시되고 아래 미들웨어가 실행된다.
+app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send("Something broke!");
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
