@@ -9,6 +9,7 @@ module.exports = {
     </head>
     <body>
       <h1><a href="/">WEB</a></h1>
+      <a href="/author">author</a>
       ${list}
       ${control}
       ${body}
@@ -38,5 +39,23 @@ module.exports = {
             i++;
         }
         return `<select name="author">${tag}</select>`;
+    },
+    authorTable: function(authors) {
+        var authorList = `<table><tbody>`;
+        var i = 0;
+
+        while (i < authors.length) {
+            authorList += `
+                <tr>
+                    <td>${authors[i].name}</td>
+                    <td>${authors[0].profile}</td>
+                    <td>update</td>
+                    <td>delete</td>
+                </tr>`;
+            i++;
+        }
+
+        authorList += `</tbody></table>`;
+        return authorList;
     }
 };
