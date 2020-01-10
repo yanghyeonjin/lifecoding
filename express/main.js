@@ -1,11 +1,23 @@
 var express = require("express"); // express 모듈을 load, express 변수로 사용
 var app = express(); // 변수 express는 함수
 var port = 3000;
+var fs = require("fs");
+var template = require("./lib/template.js");
 
+// app.get(path, callback)
 // app.get('/', function(req, res) {return res.send("Hello World!")})
 // route, routing
 // 갈림길에서 방향을 잡는 것. 사용자들이 여러 path로 들어올 때 그에 따른 응답을 해주는 것.
-app.get("/", (req, res) => res.send("Hello World!")); // app.get(path, callback)
+app.get("/", (request, response) =>
+    fs.readdir("./data", function(error, filelist) {
+        var title = "Welcome";
+        var description = "Hello, Node.js";
+        var list = template.list(filelist);
+        var html = template.HTML(title, list, `<h2>${title}</h2>${description}`, `<a href="/create">create</a>`);
+        response.writeHead(200);
+        response.end(html);
+    })
+);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
