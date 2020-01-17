@@ -11,7 +11,11 @@ http.createServer(function(request, response) {
     console.log(cookies.yummy_cookie);
 
     response.writeHead(200, {
-        'Set-Cookie': ['yummy_cookie=choco', 'tasty_cookie=strawberry']
+        'Set-Cookie': [
+            'yummy_cookie=choco',
+            'tasty_cookie=strawberry',
+            `Permanent=cookies; Max-Age=${60 * 60 * 24 * 30}` // Max-Age: 얼마동안 살아있을 것인가.. 초 단위로 입력
+        ]
     });
     response.end('Cookie!!');
 }).listen(3000);
