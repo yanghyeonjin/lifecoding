@@ -5,11 +5,33 @@ var qs = require('querystring');
 var template = require('./lib/template.js');
 var path = require('path');
 var sanitizeHtml = require('sanitize-html');
+var cookie = require('cookie');
+
+function authIsOwner(request, response) {
+    var isOwner = false;
+    var cookies = {};
+
+    if (request.headers.cookie) {
+        // 생성된 쿠키가 있는지 확인
+        // undefined이면 자바스크립트는 false를 return
+        cookies = cookie.parse(request.headers.cookie);
+    }
+
+    if (cookies.email === 'egoing777@gmail.com' && cookies.password === '111111') {
+        // owner인지 확인
+        isOwner = true;
+    }
+    return isOwner;
+}
 
 var app = http.createServer(function(request, response) {
     var _url = request.url;
     var queryData = url.parse(_url, true).query;
     var pathname = url.parse(_url, true).pathname;
+    var isOwner = authIsOwner(request, response);
+
+    console.log(isOwner);
+
     if (pathname === '/') {
         if (queryData.id === undefined) {
             fs.readdir('./data', function(error, filelist) {
