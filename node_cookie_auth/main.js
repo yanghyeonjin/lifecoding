@@ -161,6 +161,23 @@ var app = http.createServer(function(request, response) {
             response.end(html);
         });
     } else if (pathname === '/login_process') {
+        var body = '';
+        request.on('data', function(data) {
+            body = body + data;
+        });
+        request.on('end', function() {
+            var post = qs.parse(body);
+            if (post.email === 'egoing777@gmail.com' && post.password === '111111') {
+                response.writeHead(302, {
+                    'Set-Cookie': [`email=${post.email}`, `password=${post.password}`, `nickname=egoing`],
+                    Location: '/'
+                });
+                response.end();
+            } else {
+                // 로그인 실패했을 때
+                response.end('Who?');
+            }
+        });
     } else {
         response.writeHead(404);
         response.end('Not found');
