@@ -14,7 +14,9 @@ http.createServer(function(request, response) {
         'Set-Cookie': [
             'yummy_cookie=choco',
             'tasty_cookie=strawberry',
-            `Permanent=cookies; Max-Age=${60 * 60 * 24 * 30}` // Max-Age: 얼마동안 살아있을 것인가.. 초 단위로 입력
+            `Permanent=cookies; Max-Age=${60 * 60 * 24 * 30}`, // Max-Age: 얼마동안 살아있을 것인가.. 초 단위로 입력
+            'SecureCookieName=SecureCookieValue; Secure', // https에서만 쿠키 생성됨
+            'HttpOnlyCookieName=HttpOnlyCookieValue; HttpOnly' // http 통신에서만 쿠키 확인 가능. 자바스크립트를 통해 접근 불가
         ]
     });
     response.end('Cookie!!');
