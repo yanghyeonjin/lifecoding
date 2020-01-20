@@ -109,6 +109,6 @@ public/
 secret_key.js
 
 #sessions
-sessions/*
+sessions/
 
 # End of https://www.gitignore.io/api/node,visualstudiocode
