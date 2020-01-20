@@ -1,5 +1,6 @@
 module.exports = {
-    HTML: function(title, list, body, control) {
+    // 넘어온 인자가 없을 때 기본값을 지정
+    HTML: function(title, list, body, control, authStatusUI = '<a href="/login">login</a>') {
         return `
     <!doctype html>
     <html>
@@ -8,7 +9,7 @@ module.exports = {
       <meta charset="utf-8">
     </head>
     <body>
-      <a href="/login">login</a>
+      ${authStatusUI}
       <h1><a href="/">WEB</a></h1>
       ${list}
       ${control}
