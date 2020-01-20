@@ -14,6 +14,13 @@ var authRouter = require('./routes/auth');
 
 app.use(helmet()); // 기본적으로 사용한다고 생각
 
+// public 디렉토리 안에서 정적파일을 찾겠다.
+// url로 localhost:3000/images/파일이름
+app.use(express.static('public'));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(compression());
+
 app.use(
     session({
         secret: 'keyboard cat', // 다른 사람에게 공유되면 안되는 정보
@@ -23,8 +30,35 @@ app.use(
     })
 );
 
-var passport = require('passport'); // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
-var LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
+    LocalStrategy = require('passport-local').Strategy;
+
+passport.use(
+    new LocalStrategy(
+        {
+            // name으로 넘어오는 단어들 바꾸고 싶을 때...
+            // 기본은 username, password임
+            usernameField: 'email',
+            passwordField: 'pwd'
+        },
+        function(username, password, done) {
+            console.log('LocalStrategy', username, password);
+            /*
+    User.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+      
+    });
+    */
+        }
+    )
+);
 
 // /auth/login_process로 들어왔을 때 실행
 // 'local' 전략은 username이랑 password로 인증할 때..
@@ -32,13 +66,6 @@ var LocalStrategy = require('passport-local').Strategy;
 // 로그인 성공 > /
 // 로그인 실패 > /auth/login
 app.post('/auth/login_process', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/auth/login' }));
-
-// public 디렉토리 안에서 정적파일을 찾겠다.
-// url로 localhost:3000/images/파일이름
-app.use(express.static('public'));
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(compression());
 
 // get 방식에 해당하는 모든 것에 적용
 // post 방식으로 처리하는 것들은 파일 목록을 안불러도 되니까 제외
