@@ -1,12 +1,13 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-var path = require("path");
-var fs = require("fs");
-var sanitizeHtml = require("sanitize-html");
-var template = require("../lib/template");
+var path = require('path');
+var fs = require('fs');
+var sanitizeHtml = require('sanitize-html');
+var template = require('../lib/template');
+var auth = require('../lib/auth');
 
-router.get("/create", (request, response) => {
-    var title = "WEB - create";
+router.get('/create', (request, response) => {
+    var title = 'WEB - create';
     var list = template.list(request.list);
     var html = template.HTML(
         title,
@@ -22,21 +23,22 @@ router.get("/create", (request, response) => {
         </p>
       </form>
       `,
-        ""
+        '',
+        auth.statusUI(request, response)
     );
     response.send(html);
 });
 
-router.post("/create_process", (request, response) => {
+router.post('/create_process', (request, response) => {
     var post = request.body; // body-parser 미들웨어 사용
     var title = post.title;
     var description = post.description;
-    fs.writeFile(`data/${title}`, description, "utf8", function(err) {
+    fs.writeFile(`data/${title}`, description, 'utf8', function(err) {
         response.redirect(`/topic/${title}`);
     });
 });
 
-router.post("/delete_process", (request, response) => {
+router.post('/delete_process', (request, response) => {
     var post = request.body;
     var id = post.id;
     var filteredId = path.parse(id).base;
@@ -45,9 +47,9 @@ router.post("/delete_process", (request, response) => {
     });
 });
 
-router.get("/update/:pageID", (request, response) => {
+router.get('/update/:pageID', (request, response) => {
     var filteredId = path.parse(request.params.pageID).base;
-    fs.readFile(`data/${filteredId}`, "utf8", function(err, description) {
+    fs.readFile(`data/${filteredId}`, 'utf8', function(err, description) {
         var title = request.params.pageID;
         var list = template.list(request.list);
         var html = template.HTML(
@@ -65,34 +67,35 @@ router.get("/update/:pageID", (request, response) => {
                 </p>
               </form>
               `,
-            `<a href="/topic/create">create</a> <a href="/topic/update/${title}">update</a>`
+            `<a href="/topic/create">create</a> <a href="/topic/update/${title}">update</a>`,
+            auth.statusUI(request, response)
         );
         response.send(html);
     });
 });
 
-router.post("/update_process", (request, response) => {
+router.post('/update_process', (request, response) => {
     var post = request.body;
     var id = post.id;
     var title = post.title;
     var description = post.description;
     fs.rename(`data/${id}`, `data/${title}`, function(error) {
-        fs.writeFile(`data/${title}`, description, "utf8", function(err) {
+        fs.writeFile(`data/${title}`, description, 'utf8', function(err) {
             response.redirect(`/topic/${title}`);
         });
     });
 });
 
-router.get("/:pageID", (request, response, next) => {
+router.get('/:pageID', (request, response, next) => {
     var filteredId = path.parse(request.params.pageID).base;
-    fs.readFile(`data/${filteredId}`, "utf8", function(err, description) {
+    fs.readFile(`data/${filteredId}`, 'utf8', function(err, description) {
         if (err) {
             next(err);
         } else {
             var title = request.params.pageID;
             var sanitizedTitle = sanitizeHtml(title);
             var sanitizedDescription = sanitizeHtml(description, {
-                allowedTags: ["h1"]
+                allowedTags: ['h1']
             });
             var list = template.list(request.list);
             var html = template.HTML(
@@ -104,7 +107,8 @@ router.get("/:pageID", (request, response, next) => {
               <form action="/topic/delete_process" method="post">
                 <input type="hidden" name="id" value="${sanitizedTitle}">
                 <input type="submit" value="delete">
-              </form>`
+              </form>`,
+                auth.statusUI(request, response)
             );
             response.send(html);
         }
