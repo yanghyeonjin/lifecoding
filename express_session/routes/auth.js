@@ -5,6 +5,13 @@ var fs = require('fs');
 var sanitizeHtml = require('sanitize-html');
 var template = require('../lib/template');
 
+// 실제로 이렇게 하면 안 됨
+var authData = {
+    email: 'egoing777@gmail.com',
+    password: '111111',
+    nickname: 'egoing'
+};
+
 router.get('/login', (request, response) => {
     var title = 'WEB - login';
     var list = template.list(request.list);
@@ -23,6 +30,19 @@ router.get('/login', (request, response) => {
         ''
     );
     response.send(html);
+});
+
+router.post('/login_process', (request, response) => {
+    var post = request.body; // body-parser 미들웨어 사용
+    var email = post.email;
+    var password = post.pwd;
+
+    if (email === authData.email && password === authData.password) {
+        // success
+        response.send('Welcome!');
+    } else {
+        response.send('Who?');
+    }
 });
 
 /*
