@@ -40,6 +40,10 @@ var authData = {
     nickname: 'egoing'
 };
 
+// pm2, nodemon과 같은 자동 재시작 도구를 사용하는 경우 세션 정보가 저장이 안되는 현상이 발생할 수 있습니다.
+// 이유는 sessions 디렉토리에 파일이 추가되면 node가 재시작 되기 때문입니다.
+// 이를 해결하기 위해 sessions 디렉토리에 대해서는 재시작을 하지 않도록 조치해야 합니다.
+// nodemon main.js --ignore sessions/*
 passport.use(
     new LocalStrategy(
         {
