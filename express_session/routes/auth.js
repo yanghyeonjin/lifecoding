@@ -41,7 +41,10 @@ router.post('/login_process', (request, response) => {
         // success
         request.session.is_login = true;
         request.session.nickname = authData.nickname;
-        response.redirect('/');
+        request.session.save(function() {
+            // session store에 저장이 끝난 후..
+            response.redirect('/');
+        });
     } else {
         response.send('Who?');
     }
