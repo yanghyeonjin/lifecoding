@@ -7,6 +7,10 @@ var template = require('../lib/template');
 var auth = require('../lib/auth');
 
 router.get('/create', (request, response) => {
+    if (!auth.isOwner(request, response)) {
+        response.redirect('/');
+        return false;
+    }
     var title = 'WEB - create';
     var list = template.list(request.list);
     var html = template.HTML(
@@ -30,6 +34,10 @@ router.get('/create', (request, response) => {
 });
 
 router.post('/create_process', (request, response) => {
+    if (!auth.isOwner(request, response)) {
+        response.redirect('/');
+        return false;
+    }
     var post = request.body; // body-parser 미들웨어 사용
     var title = post.title;
     var description = post.description;
@@ -39,6 +47,10 @@ router.post('/create_process', (request, response) => {
 });
 
 router.post('/delete_process', (request, response) => {
+    if (!auth.isOwner(request, response)) {
+        response.redirect('/');
+        return false;
+    }
     var post = request.body;
     var id = post.id;
     var filteredId = path.parse(id).base;
@@ -48,6 +60,10 @@ router.post('/delete_process', (request, response) => {
 });
 
 router.get('/update/:pageID', (request, response) => {
+    if (!auth.isOwner(request, response)) {
+        response.redirect('/');
+        return false;
+    }
     var filteredId = path.parse(request.params.pageID).base;
     fs.readFile(`data/${filteredId}`, 'utf8', function(err, description) {
         var title = request.params.pageID;
@@ -75,6 +91,10 @@ router.get('/update/:pageID', (request, response) => {
 });
 
 router.post('/update_process', (request, response) => {
+    if (!auth.isOwner(request, response)) {
+        response.redirect('/');
+        return false;
+    }
     var post = request.body;
     var id = post.id;
     var title = post.title;
