@@ -26,6 +26,13 @@ app.use(
 var passport = require('passport'); // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
 var LocalStrategy = require('passport-local').Strategy;
 
+// /auth/login_process로 들어왔을 때 실행
+// 'local' 전략은 username이랑 password로 인증할 때..
+// 구글이나 페이스북 로그인은 다른 것 써야 함
+// 로그인 성공 > /
+// 로그인 실패 > /auth/login
+app.post('/auth/login_process', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/auth/login' }));
+
 // public 디렉토리 안에서 정적파일을 찾겠다.
 // url로 localhost:3000/images/파일이름
 app.use(express.static('public'));

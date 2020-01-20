@@ -32,6 +32,7 @@ router.get('/login', (request, response) => {
     response.send(html);
 });
 
+/*
 router.post('/login_process', (request, response) => {
     var post = request.body; // body-parser 미들웨어 사용
     var email = post.email;
@@ -49,6 +50,7 @@ router.post('/login_process', (request, response) => {
         response.send('Who?');
     }
 });
+*/
 
 router.get('/logout', (request, response) => {
     request.session.destroy(function(error) {
