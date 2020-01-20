@@ -37,13 +37,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-    // done(null, user.id);
+    // 로그인 성공했을 때 전달한 authData가 user로...
+    // 사용자를 식별할 수 있는 인자를 전달... > 여기에서는 email
+    console.log('Serialize', user);
+    done(null, user.email);
 });
 
 passport.deserializeUser(function(id, done) {
-    // User.findById(id, function(err, user) {
-    //     done(err, user);
-    // });
+    // 페이지에 들어올 때마다 호출 됨.
+    // 식별자로 넘겨준 user.email이 id가 되었다.
+    console.log('Deserialize', id);
+    done(null, authData);
 });
 
 // 실제로 이렇게 하면 안 됨
