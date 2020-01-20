@@ -39,7 +39,9 @@ router.post('/login_process', (request, response) => {
 
     if (email === authData.email && password === authData.password) {
         // success
-        response.send('Welcome!');
+        request.session.is_login = true;
+        request.session.nickname = authData.nickname;
+        response.redirect('/');
     } else {
         response.send('Who?');
     }

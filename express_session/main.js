@@ -5,12 +5,23 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 var compression = require('compression');
 var helmet = require('helmet');
+var session = require('express-session');
+var FileStore = require('session-file-store')(session); // 파일보단 디비에 저장 권장 ...
 
 var topicRouter = require('./routes/topic');
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 
 app.use(helmet()); // 기본적으로 사용한다고 생각
+
+app.use(
+    session({
+        secret: 'keyboard cat', // 다른 사람에게 공유되면 안되는 정보
+        resave: false, // 그냥 false로...
+        saveUninitialized: true, // 그냥 ture로... true면 세션이 필요하기 전까지 세션을 구동시키지 않는다.
+        store: new FileStore()
+    })
+);
 
 // public 디렉토리 안에서 정적파일을 찾겠다.
 // url로 localhost:3000/images/파일이름
