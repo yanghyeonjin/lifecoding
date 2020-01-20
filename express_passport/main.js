@@ -49,7 +49,7 @@ passport.deserializeUser(function(id, done) {
     // 저장된 데이터를 기준으로 우리가 필요한 데이터를 조회할 때 사용하는 것.
     // 식별자로 넘겨준 user.email이 id가 되었다.
     console.log('Deserialize', id);
-    done(null, authData);
+    done(null, authData); // authData > request.user로 데이터 주입.
 });
 
 // 실제로 이렇게 하면 안 됨
