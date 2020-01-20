@@ -6,32 +6,14 @@ var app = express();
 
 app.use(
     session({
-        secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: true
+        secret: 'keyboard cat', // 다른 사람에게 공유되면 안되는 정보
+        resave: false, // 그냥 false로...
+        saveUninitialized: true // 그냥 ture로... true면 세션이 필요하기 전까지 세션을 구동시키지 않는다.
     })
 );
 
-app.use(function(req, res, next) {
-    if (!req.session.views) {
-        req.session.views = {};
-    }
-
-    // get the url pathname
-    var pathname = parseurl(req).pathname;
-
-    // count the views
-    req.session.views[pathname] = (req.session.views[pathname] || 0) + 1;
-
-    next();
-});
-
-app.get('/foo', function(req, res, next) {
-    res.send('you viewed this page ' + req.session.views['/foo'] + ' times');
-});
-
-app.get('/bar', function(req, res, next) {
-    res.send('you viewed this page ' + req.session.views['/bar'] + ' times');
+app.get('/', function(req, res, next) {
+    res.send('Hello session');
 });
 
 app.listen(3000, function() {
