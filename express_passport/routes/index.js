@@ -8,6 +8,7 @@ var auth = require('../lib/auth');
 // route, routing
 // 갈림길에서 방향을 잡는 것. 사용자들이 여러 path로 들어올 때 그에 따른 응답을 해주는 것.
 router.get('/', (request, response) => {
+    console.log('/', request.user);
     var title = 'Welcome';
     var description = 'Hello, Node.js';
     var list = template.list(request.list);

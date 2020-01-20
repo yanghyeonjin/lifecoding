@@ -33,6 +33,19 @@ app.use(
 var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
     LocalStrategy = require('passport-local').Strategy;
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+    // done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    // User.findById(id, function(err, user) {
+    //     done(err, user);
+    // });
+});
+
 // 실제로 이렇게 하면 안 됨
 var authData = {
     email: 'egoing777@gmail.com',
