@@ -25,30 +25,14 @@ router.get('/login', (request, response) => {
     response.send(html);
 });
 
-/*
-router.post('/login_process', (request, response) => {
-    var post = request.body; // body-parser 미들웨어 사용
-    var email = post.email;
-    var password = post.pwd;
-
-    if (email === authData.email && password === authData.password) {
-        // success
-        request.session.is_login = true;
-        request.session.nickname = authData.nickname;
-        request.session.save(function() {
-            // session store에 저장이 끝난 후..
+router.get('/logout', (request, response) => {
+    request.logout(); // passport로 로그아웃하고
+    request.session.save(function() {
+        // 현재의 세션상태를 세션 store에 저장하고 나서...
+        request.session.destroy(function(error) {
+            // 세션 삭제가 끝난 후...
             response.redirect('/');
         });
-    } else {
-        response.send('Who?');
-    }
-});
-*/
-
-router.get('/logout', (request, response) => {
-    request.session.destroy(function(error) {
-        // 세션 삭제가 끝난 후...
-        response.redirect('/');
     });
 });
 
