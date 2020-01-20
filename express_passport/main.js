@@ -37,6 +37,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
+    // 로그인 성공했을 때 딱 한번 호출 되면서 session store에 식별자를 저장하는 역할 > sessions 폴더 안에 있는 파일들..
     // 로그인 성공했을 때 전달한 authData가 user로...
     // 사용자를 식별할 수 있는 인자를 전달... > 여기에서는 email
     console.log('Serialize', user);
@@ -45,6 +46,7 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
     // 페이지에 들어올 때마다 호출 됨.
+    // 저장된 데이터를 기준으로 우리가 필요한 데이터를 조회할 때 사용하는 것.
     // 식별자로 넘겨준 user.email이 id가 되었다.
     console.log('Deserialize', id);
     done(null, authData);
