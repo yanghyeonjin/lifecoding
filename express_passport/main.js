@@ -7,6 +7,7 @@ var compression = require('compression');
 var helmet = require('helmet');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session); // 파일보단 디비에 저장 권장 ...
+var flash = require('connect-flash');
 
 var topicRouter = require('./routes/topic');
 var indexRouter = require('./routes/index');
@@ -29,6 +30,19 @@ app.use(
         store: new FileStore()
     })
 );
+
+app.use(flash()); // session을 사용하기 때문에 session 아래에 배치
+app.get('/flash', function(req, res) {
+    req.flash('msg', 'Flash is back!!'); // session store에 key와 value로 저장된다.
+    res.send('flash');
+});
+
+app.get('/flash-display', function(req, res) {
+    // flash 데이터를 session store에서 삭제 시킨 다음에 변수에 담는다..
+    var fmsg = req.flash();
+    console.log(fmsg);
+    res.send(fmsg);
+});
 
 var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
     LocalStrategy = require('passport-local').Strategy;
