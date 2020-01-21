@@ -32,17 +32,6 @@ app.use(
 );
 
 app.use(flash()); // session을 사용하기 때문에 session 아래에 배치
-app.get('/flash', function(req, res) {
-    req.flash('msg', 'Flash is back!!'); // session store에 key와 value로 저장된다.
-    res.send('flash');
-});
-
-app.get('/flash-display', function(req, res) {
-    // flash 데이터를 session store에서 삭제 시킨 다음에 변수에 담는다..
-    var fmsg = req.flash();
-    console.log(fmsg);
-    res.send(fmsg);
-});
 
 var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
     LocalStrategy = require('passport-local').Strategy;
@@ -91,7 +80,7 @@ passport.use(
                 console.log(1);
                 if (password === authData.password) {
                     console.log(2);
-                    return done(null, authData);
+                    return done(null, authData, { message: 'Welcome!' });
                 } else {
                     console.log(3);
                     return done(null, false, { message: 'Incorrect password.' });
@@ -109,7 +98,7 @@ passport.use(
 // 구글이나 페이스북 로그인은 다른 것 써야 함
 // 로그인 성공 > /
 // 로그인 실패 > /auth/login
-app.post('/auth/login_process', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/auth/login' }));
+app.post('/auth/login_process', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/auth/login', failureFlash: true, successFlash: true }));
 
 // get 방식에 해당하는 모든 것에 적용
 // post 방식으로 처리하는 것들은 파일 목록을 안불러도 되니까 제외
