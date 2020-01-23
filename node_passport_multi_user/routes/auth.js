@@ -5,6 +5,15 @@ var fs = require('fs');
 var sanitizeHtml = require('sanitize-html');
 var template = require('../lib/template');
 
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+
+const adapter = new FileSync('db.json');
+const db = low(adapter);
+db.defaults({
+    users: []
+}).write();
+
 module.exports = function(passport) {
     router.get('/login', (request, response) => {
         var fmsg = request.flash();
@@ -53,10 +62,10 @@ module.exports = function(passport) {
             `
         <div style="color: red;">${feedback}</div>
       <form action="/auth/register_process" method="post">
-        <p><input type="text" name="email" placeholder="email"></p>
-        <p><input type="password" name="pwd" placeholder="password"></p>
-        <p><input type="password" name="pwd2" placeholder="password confirm"></p>
-        <p><input type="text" name="displayName" placeholder="displayName"></p>
+        <p><input type="text" name="email" placeholder="email" value="egoing777@gmail.com"></p>
+        <p><input type="password" name="pwd" placeholder="password" value="111111"></p>
+        <p><input type="password" name="pwd2" placeholder="password confirm" value="111111"></p>
+        <p><input type="text" name="displayName" placeholder="displayName" value="egoing"></p>
         <p>
           <input type="submit" value="register">
         </p>
@@ -65,6 +74,22 @@ module.exports = function(passport) {
             ''
         );
         response.send(html);
+    });
+
+    router.post('/register_process', (request, response) => {
+        var post = request.body;
+        var email = post.email;
+        var pwd = post.pwd;
+        var pwd2 = post.pwd2;
+        var displayName = post.displayName;
+        db.get('users')
+            .push({
+                email: email,
+                password: pwd,
+                displayName: displayName
+            })
+            .write();
+        response.redirect('/');
     });
 
     router.get('/logout', (request, response) => {
