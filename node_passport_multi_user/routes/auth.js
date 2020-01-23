@@ -5,15 +5,7 @@ var fs = require('fs');
 var sanitizeHtml = require('sanitize-html');
 var template = require('../lib/template');
 var shortid = require('shortid');
-
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-
-const adapter = new FileSync('db.json');
-const db = low(adapter);
-db.defaults({
-    users: []
-}).write();
+var db = require('../lib/lowdb');
 
 module.exports = function(passport) {
     router.get('/login', (request, response) => {
@@ -88,15 +80,20 @@ module.exports = function(passport) {
             request.flash('error', 'Password must same!');
             response.redirect('/auth/register');
         } else {
+            var user = {
+                id: shortid.generate(),
+                email: email,
+                password: pwd,
+                displayName: displayName
+            };
             db.get('users')
-                .push({
-                    id: shortid.generate(),
-                    email: email,
-                    password: pwd,
-                    displayName: displayName
-                })
+                .push(user)
                 .write();
-            response.redirect('/');
+
+            // 회원가입 성공 후 바로 로그인 시키기
+            request.login(user, function(err) {
+                return response.redirect('/');
+            });
         }
     });
 
