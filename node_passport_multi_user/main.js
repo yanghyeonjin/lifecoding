@@ -8,6 +8,7 @@ var helmet = require('helmet');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session); // 파일보단 디비에 저장 권장 ...
 var flash = require('connect-flash');
+var db = require('./lib/lowdb');
 
 app.use(helmet()); // 기본적으로 사용한다고 생각
 
@@ -35,10 +36,8 @@ var passport = require('./lib/passport')(app);
 // get 방식에 해당하는 모든 것에 적용
 // post 방식으로 처리하는 것들은 파일 목록을 안불러도 되니까 제외
 app.get('*', function(request, response, next) {
-    fs.readdir('./data', function(error, filelist) {
-        request.list = filelist;
-        next();
-    });
+    request.list = db.get('topics').value();
+    next();
 });
 
 var topicRouter = require('./routes/topic');
