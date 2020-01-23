@@ -111,4 +111,7 @@ secret_key.js
 #sessions
 sessions/
 
+#multi user on passport db.json
+node_passport_multi_user/db.json
+
 # End of https://www.gitignore.io/api/node,visualstudiocode
