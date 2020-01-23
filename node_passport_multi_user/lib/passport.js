@@ -1,4 +1,6 @@
 var db = require('../lib/lowdb');
+var bcrypt = require('bcryptjs');
+
 module.exports = function(app) {
     var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
         LocalStrategy = require('passport-local').Strategy;
@@ -45,14 +47,23 @@ module.exports = function(app) {
                 var user = db
                     .get('users')
                     .find({
-                        email: email,
-                        password: password
+                        email: email
                     })
                     .value();
                 if (user) {
-                    return done(null, user, { message: 'Welcome!' });
+                    // 이메일이 있으면
+                    bcrypt.compare(password, user.password, function(err, res) {
+                        if (res) {
+                            // 비밀번호도 맞으면
+                            return done(null, user, { message: 'Welcome!' });
+                        } else {
+                            // 이메일은 맞는데 비밀번호 틀림
+                            return done(null, false, { message: 'Password is not correct.' });
+                        }
+                    });
                 } else {
-                    return done(null, false, { message: 'Incorrect user Information.' });
+                    // 이메일도 없음
+                    return done(null, false, { message: 'There is no email.' });
                 }
             }
         )

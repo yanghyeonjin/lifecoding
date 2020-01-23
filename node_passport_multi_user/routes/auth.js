@@ -6,6 +6,7 @@ var sanitizeHtml = require('sanitize-html');
 var template = require('../lib/template');
 var shortid = require('shortid');
 var db = require('../lib/lowdb');
+var bcrypt = require('bcryptjs');
 
 module.exports = function(passport) {
     router.get('/login', (request, response) => {
@@ -80,19 +81,23 @@ module.exports = function(passport) {
             request.flash('error', 'Password must same!');
             response.redirect('/auth/register');
         } else {
-            var user = {
-                id: shortid.generate(),
-                email: email,
-                password: pwd,
-                displayName: displayName
-            };
-            db.get('users')
-                .push(user)
-                .write();
+            bcrypt.genSalt(10, function(err, salt) {
+                bcrypt.hash(pwd, salt, function(err, hash) {
+                    var user = {
+                        id: shortid.generate(),
+                        email: email,
+                        password: hash,
+                        displayName: displayName
+                    };
+                    db.get('users')
+                        .push(user)
+                        .write();
 
-            // 회원가입 성공 후 바로 로그인 시키기
-            request.login(user, function(err) {
-                return response.redirect('/');
+                    // 회원가입 성공 후 바로 로그인 시키기
+                    request.login(user, function(err) {
+                        return response.redirect('/');
+                    });
+                });
             });
         }
     });
