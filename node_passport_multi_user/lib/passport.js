@@ -1,12 +1,5 @@
 var db = require('../lib/lowdb');
 module.exports = function(app) {
-    // 실제로 이렇게 하면 안 됨
-    var authData = {
-        email: 'egoing777@gmail.com',
-        password: '111111',
-        nickname: 'egoing'
-    };
-
     var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
         LocalStrategy = require('passport-local').Strategy;
 
@@ -47,16 +40,19 @@ module.exports = function(app) {
                 usernameField: 'email',
                 passwordField: 'pwd'
             },
-            function(username, password, done) {
-                console.log('LocalStrategy', username);
-                if (username === authData.email) {
-                    if (password === authData.password) {
-                        return done(null, authData, { message: 'Welcome!' });
-                    } else {
-                        return done(null, false, { message: 'Incorrect password.' });
-                    }
+            function(email, password, done) {
+                console.log('LocalStrategy', email);
+                var user = db
+                    .get('users')
+                    .find({
+                        email: email,
+                        password: password
+                    })
+                    .value();
+                if (user) {
+                    return done(null, user, { message: 'Welcome!' });
                 } else {
-                    return done(null, false, { message: 'Incorrect username.' });
+                    return done(null, false, { message: 'Incorrect user Information.' });
                 }
             }
         )
