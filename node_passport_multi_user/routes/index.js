@@ -13,6 +13,8 @@ router.get('/', (request, response) => {
     var feedback = '';
     if (fmsg.success) {
         feedback = fmsg.success[0];
+    } else if (fmsg.error) {
+        feedback = fmsg.error[0];
     }
     var title = 'Welcome';
     var description = 'Hello, Node.js';
