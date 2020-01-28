@@ -4,7 +4,7 @@ var bcrypt = require('bcryptjs');
 module.exports = function(app) {
     var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
         LocalStrategy = require('passport-local').Strategy,
-        GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
+        GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
     app.use(passport.initialize());
     app.use(passport.session());
