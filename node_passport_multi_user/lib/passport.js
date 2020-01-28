@@ -3,7 +3,8 @@ var bcrypt = require('bcryptjs');
 
 module.exports = function(app) {
     var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
-        LocalStrategy = require('passport-local').Strategy;
+        LocalStrategy = require('passport-local').Strategy,
+        GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
 
     app.use(passport.initialize());
     app.use(passport.session());
@@ -68,5 +69,28 @@ module.exports = function(app) {
             }
         )
     );
+
+    var secret_key = require('../lib/secret_key');
+    passport.use(
+        new GoogleStrategy(
+            {
+                clientID: secret_key.GOOGLE_CLIENT_ID,
+                clientSecret: secret_key.GOOGLE_CLIENT_SECRET,
+                callbackURL: secret_key.GOOGLE_CALLBACK_URL
+            },
+            function(accessToken, refreshToken, profile, done) {
+                console.log('GoogleStrategy', accessToken, refreshToken, profile);
+                // User.findOrCreate({ googleId: profile.id }, function(err, user) {
+                //     return done(err, user);
+                // });
+            }
+        )
+    );
+
+    app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+    app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/login' }), function(req, res) {
+        // 사용자가 구글로그인 성공했으면
+        res.redirect('/');
+    });
     return passport;
 };
