@@ -62,13 +62,18 @@ module.exports = function(app) {
                 callbackURL: secret_key.GOOGLE_CALLBACK_URL
             },
             function(accessToken, refreshToken, profile, done) {
-                User.findOrCreate({ googleId: profile.id }, function(err, user) {
-                    return done(err, user);
-                });
+                console.log('GoogleStrategy', accessToken, refreshToken, profile);
+                // User.findOrCreate({ googleId: profile.id }, function(err, user) {
+                //     return done(err, user);
+                // });
             }
         )
     );
 
     app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+    app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/login' }), function(req, res) {
+        // 사용자가 구글로그인 성공했으면
+        res.redirect('/');
+    });
     return passport;
 };
