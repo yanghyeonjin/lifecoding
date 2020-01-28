@@ -7,7 +7,8 @@ module.exports = function(app) {
     };
 
     var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
-        LocalStrategy = require('passport-local').Strategy;
+        LocalStrategy = require('passport-local').Strategy,
+        GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
     app.use(passport.initialize());
     app.use(passport.session());
@@ -48,6 +49,22 @@ module.exports = function(app) {
                 } else {
                     return done(null, false, { message: 'Incorrect username.' });
                 }
+            }
+        )
+    );
+
+    var secret_key = require('../lib/secret_key');
+    passport.use(
+        new GoogleStrategy(
+            {
+                clientID: secret_key.GOOGLE_CLIENT_ID,
+                clientSecret: secret_key.GOOGLE_CLIENT_SECRET,
+                callbackURL: secret_key.GOOGLE_CALLBACK_URL
+            },
+            function(accessToken, refreshToken, profile, done) {
+                User.findOrCreate({ googleId: profile.id }, function(err, user) {
+                    return done(err, user);
+                });
             }
         )
     );
