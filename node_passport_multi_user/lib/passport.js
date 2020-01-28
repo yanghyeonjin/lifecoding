@@ -5,7 +5,8 @@ var shortID = require('shortid');
 module.exports = function(app) {
     var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
         LocalStrategy = require('passport-local').Strategy,
-        GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+        GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
+        FacebookStrategy = require('passport-facebook').Strategy;
 
     app.use(passport.initialize());
     app.use(passport.session());
@@ -114,5 +115,41 @@ module.exports = function(app) {
         // 사용자가 구글로그인 성공했으면
         res.redirect('/');
     });
+
+    passport.use(
+        new FacebookStrategy(
+            {
+                clientID: secret_key.FACEBOOK_APP_ID,
+                clientSecret: secret_key.FACEBOOK_APP_SECRET,
+                callbackURL: secret_key.FACEBOOK_CALLBACK_URL,
+                profileFields: ['id', 'emails', 'name', 'displayName']
+            },
+            function(accessToken, refreshToken, profile, done) {
+                var facebook_email = profile.emails[0].value;
+                var user = db
+                    .get('users')
+                    .find({ email: facebook_email })
+                    .value();
+                if (user) {
+                } else {
+                    user = {
+                        id: shortID.generate(),
+                        email: facebook_email,
+                        facebookId: profile.id,
+                        displayName: profile.displayName
+                    };
+                    db.get('users')
+                        .push(user)
+                        .write();
+                }
+                // null: error가 없다.
+                // user 객체: serializeUser로 넘겨줌.
+                done(null, user);
+            }
+        )
+    );
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
+    app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/auth/login' }));
+
     return passport;
 };
