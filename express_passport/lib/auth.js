@@ -8,7 +8,7 @@ module.exports = {
         }
     },
     statusUI: function(request, response) {
-        var authStatusUI = '<a href="/auth/login">login</a>';
+        var authStatusUI = `<a href="/auth/login">login</a> | <a href="/auth/google">Login with Google</a>`;
         if (this.isOwner(request, response)) {
             authStatusUI = `${request.user.nickname} | <a href="/auth/logout">logout</a>`;
         }
