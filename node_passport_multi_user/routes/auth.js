@@ -83,15 +83,29 @@ module.exports = function(passport) {
         } else {
             bcrypt.genSalt(10, function(err, salt) {
                 bcrypt.hash(pwd, salt, function(err, hash) {
-                    var user = {
-                        id: shortid.generate(),
-                        email: email,
-                        password: hash,
-                        displayName: displayName
-                    };
-                    db.get('users')
-                        .push(user)
-                        .write();
+                    var user = db
+                        .get('users')
+                        .find({ email: email })
+                        .value();
+                    if (user) {
+                        // 그냥 회원가입 시, 입력한 이메일과 같은 회원이 있을 때
+                        user.password = hash;
+                        user.displayName = displayName;
+                        db.get('users')
+                            .find({ id: user.id })
+                            .assign(user)
+                            .write();
+                    } else {
+                        var user = {
+                            id: shortid.generate(),
+                            email: email,
+                            password: hash,
+                            displayName: displayName
+                        };
+                        db.get('users')
+                            .push(user)
+                            .write();
+                    }
 
                     // 회원가입 성공 후 바로 로그인 시키기
                     request.login(user, function(err) {

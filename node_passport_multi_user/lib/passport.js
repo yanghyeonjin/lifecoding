@@ -1,5 +1,6 @@
 var db = require('../lib/lowdb');
 var bcrypt = require('bcryptjs');
+var shortID = require('shortid');
 
 module.exports = function(app) {
     var passport = require('passport'), // session 모듈을 사용하기 때문에 use session 아래에 넣어야 한다.
@@ -80,14 +81,35 @@ module.exports = function(app) {
             },
             function(accessToken, refreshToken, profile, done) {
                 console.log('GoogleStrategy', accessToken, refreshToken, profile);
-                // User.findOrCreate({ googleId: profile.id }, function(err, user) {
-                //     return done(err, user);
-                // });
+                var google_email = profile.emails[0].value;
+                var user = db
+                    .get('users')
+                    .find({ email: google_email })
+                    .value();
+                if (user) {
+                    // 구글로 로그인 했을 때, 기존에 있던 사용자 중에서 같은 이메일을 가진 사용자가 있다면
+                    user.googleId = profile.id;
+                    db.get('users')
+                        .find({ id: user.id })
+                        .assign(user)
+                        .write();
+                } else {
+                    user = {
+                        id: shortID.generate(),
+                        email: google_email,
+                        googleId: profile.id,
+                        displayName: profile.displayName
+                    };
+                    db.get('users')
+                        .push(user)
+                        .write();
+                }
+                done(null, user);
             }
         )
     );
 
-    app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+    app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'email'] }));
     app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/login' }), function(req, res) {
         // 사용자가 구글로그인 성공했으면
         res.redirect('/');
