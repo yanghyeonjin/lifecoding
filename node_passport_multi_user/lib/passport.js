@@ -131,6 +131,12 @@ module.exports = function(app) {
                     .find({ email: facebook_email })
                     .value();
                 if (user) {
+                    // 페이스북으로 로그인 했을 때, 기존에 있던 사용자 중에서 같은 이메일을 가진 사용자가 있다면
+                    user.facebookId = profile.id;
+                    db.get('users')
+                        .find({ id: user.id })
+                        .assign(user)
+                        .write();
                 } else {
                     user = {
                         id: shortID.generate(),
