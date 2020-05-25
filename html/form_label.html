@@ -1,0 +1,33 @@
+<html>
+
+<body>
+    <form action="">
+        <p>
+            <!-- label: input의 이름표 (사용 권장) -->
+            <label for="id_txt">text</label>:
+            <input type="text" name="id" value="default value" id="id_txt">
+        </p>
+        <p>
+            <label for="password">password</label>:
+            <input type="password" name="pwd" value="default value" id="password">
+        </p>
+
+        <!-- label 태그안에 입력 폼을 넣어도 됨. (입력 폼 태그를 제외한 텍스트가 label이 됨.) -->
+        <p>
+            <label>
+                textarea:
+                <textarea cols="50" rows="2" id="comment">default value</textarea>
+            </label>
+        </p>
+        <p>
+            <label>
+                <input type="checkbox" name="color" value="red"> 붉은색
+            </label>
+            <label for="color_blue">
+                <input type="checkbox" name="color" value="red" id="color_blue"> 파란색
+            </label>
+        </p>
+    </form>
+</body>
+
+</html>
