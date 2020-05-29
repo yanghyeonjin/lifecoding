@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        ul li {
+            color: red;
+        }
+
+        /* 아이디가 lecture인 요소 바로 밑에 있는 li에 대해서만 적용 */
+        /* color 속성은 상속의 특징이 있어서 아래 하위 요소들에 대해서도 모두 적용됨. */
+        #lecture>li {
+            border: 1px solid red;
+            color: blue;
+        }
+
+        /* 같은 디자인을 다른 선택자들마다 적용시키고 싶을 때 -> 쉼표 사용 */
+        ul,
+        ol {
+            background-color: powderblue;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>JavaScript</li>
+    </ul>
+    <ol id="lecture">
+        <li>HTML</li>
+        <li>
+            CSS
+            <ol>
+                <li>selector</li>
+                <li>declaration</li>
+            </ol>
+        </li>
+        <li>JavaScript</li>
+    </ol>
+</body>
+
+</html>
