@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        /* sibling selector - 인접한 요소 선택자 */
+        /* h1 바로 옆에 있는 h2를 선택 */
+        .sibling h1+h2 {
+            color: red;
+        }
+
+        /* general sibling selector */
+        /* h1에 인접해 있는 모든 h2 */
+        /* 아래 방향으로만 적용됨 */
+        .g-sibling h1~h2 {
+            color: blue;
+        }
+
+        /* child selector */
+        /* ul 바로 밑에 있는 li 선택 */
+        .child ul>li {
+            color: blueviolet;
+        }
+
+        /* firsh child selector */
+        /* first-child 클래스 안에 있는 li 중에서 첫번째로 등장하는 li 선택 */
+        /* 순서 자체도 첫번째여야 함. 위에 다른 요소가 있으면 안 됨. */
+        .first-child li:first-child {
+            color: brown;
+        }
+
+        /* only child */
+        /* 누군가의 자식이긴 한데, 혼자 자식인 경우 */
+        .only-child li:only-child {
+            color: chartreuse;
+        }
+
+        /* last child */
+        /* 순서 자체도 마지막이어야 함. 아래에 다른 요소가 있으면 안 됨. */
+        .last-child li:last-child,
+        .last-child p:last-child {
+            color: cornflowerblue;
+        }
+
+        /* nth child */
+        /* .nth-child의 ul에서 3번째 li */
+        .nth-child ul li:nth-child(3) {
+            color: darkblue;
+        }
+
+        /* nth last child */
+        /* nth child와 비슷한데 뒤에서부터 세어 나감 */
+        .nth-last-child ul li:nth-last-child(3) {
+            color: darkkhaki;
+        }
+
+        /* first of type */
+        /* 해당 타입이 처음으로 등장 */
+        .first-of-type span:first-of-type {
+            color: darksalmon;
+        }
+
+        /* nth of type */
+        /* odd(홀수번째), even(짝수번째)로 선택 가능 */
+        .nth-of-type span:nth-of-type(2),
+        .nth-of-type span:nth-of-type(odd) {
+            color: darkturquoise;
+        }
+
+        /* n을 0부터 넣어서 컴퓨터가 자동으로 계산 */
+        .nth-of-type span:nth-of-type(5n+1) {
+            text-decoration: underline;
+        }
+
+        /* only of type */
+        /* only-of-type 클래스 아래에 모든 요소 중에서, 같은 타입의 형제 자매가 없는 타입 */
+        .only-of-type *:only-of-type {
+            background-color: darkturquoise;
+        }
+
+        /* last of type */
+        /* 특정 태그 중 마지막에 있는 것 */
+        /* last-of-type 클래스 아래 요소들 중, 각 태그의 마지막 요소만 선택 */
+        .last-of-type *:last-of-type {
+            background-color: darkviolet;
+        }
+
+        /* empty */
+        /* 자식이 없는 요소 선택 */
+        .empty ul:empty {
+            width: 20px;
+            height: 20px;
+            border: 1px solid blue;
+        }
+
+        /* not */
+        .not *:not(span) {
+            background-color: blueviolet;
+        }
+    </style>
+</head>
+
+<body>
+    <article class="sibling">
+        <h1>Header1</h1>
+        <h2>Header2</h2>
+        <h2>Header2</h2>
+    </article>
+    <hr>
+    <article class="g-sibling">
+        <h2>Header2</h2>
+        <h2>Header2</h2>
+        <h1>Header1</h1>
+        <!-- 여기부터 적용 -->
+        <h2>Header2</h2>
+        <h2>Header2</h2>
+        <!-- 여기까지 적용 -->
+    </article>
+    <hr>
+    <article class="child">
+        <ul>
+            <li>list 1</li>
+            <li>list 2</li>
+        </ul>
+        <li>list 3</li>
+    </article>
+    <hr>
+    <article class="first-child">
+        <ul>
+            <li>list 1</li>
+            <li>list 2</li>
+            <li>list 3</li>
+        </ul>
+    </article>
+    <hr>
+    <article class="only-child">
+        <ul>
+            <li>only list</li>
+        </ul>
+        <ol>
+            <li>first list</li>
+            <li>second list</li>
+        </ol>
+    </article>
+    <hr>
+    <article class="last-child">
+        <p>first p</p>
+        <ul>
+            <li>first child</li>
+            <li>second child</li>
+            <li>last child</li>
+        </ul>
+        <p>last p</p>
+    </article>
+    <hr>
+    <article class="nth-child">
+        <ul>
+            <li>first list</li>
+            <li>second list</li>
+            <li>third list</li>
+            <li>fourth list</li>
+        </ul>
+    </article>
+    <hr>
+    <article class="nth-last-child">
+        <ul>
+            <li>first list</li>
+            <li>second list</li>
+            <li>third list</li>
+            <li>fourth list</li>
+        </ul>
+    </article>
+    <article class="first-of-type">
+        <p>p</p>
+        <span>span</span>
+        <span>span 2</span>
+        <p>p2</p>
+    </article>
+    <hr>
+    <article class="nth-of-type">
+        <p>p</p>
+        <span>span 1</span>
+        <span>span 2</span>
+        <span>span 3</span>
+        <span>span 4</span>
+        <span>span 5</span>
+        <span>span 6</span>
+        <span>span 7</span>
+        <span>span 8</span>
+        <span>span 9</span>
+        <span>span 10</span>
+        <span>span 11</span>
+        <span>span 12</span>
+        <p>p2</p>
+    </article>
+    <hr>
+    <article class="only-of-type">
+        <p>p 1</p>
+        <p>p 2</p>
+        <span>span 1</span>
+        <h1>h1 1</h1>
+    </article>
+    <hr>
+    <article class="last-of-type">
+        <p>p 1</p>
+        <p>p 2</p>
+        <span>span 1</span>
+        <span>span 2</span>
+    </article>
+    <hr>
+    <article class="empty">
+        <ul></ul>
+        <ul>
+            <li>list 1</li>
+            <li>list 2</li>
+        </ul>
+    </article>
+    <hr>
+    <article class="not">
+        <p>p</p>
+        <span>span</span>
+        <h1>h1</h1>
+        <h2>h2</h2>
+    </article>
+</body>
+
+</html>
