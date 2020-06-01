@@ -1,0 +1,58 @@
+<html>
+
+<head>
+    <style>
+        /* flex layout */
+
+        /* flex-direction: item이 정렬되는 방향 */
+        /* - row: 왼쪽에서 오른쪽으로 (default) */
+        /* - row-reverse: 오른쪽에서 왼쪽으로 */
+        /* - column: 위에서 아래로 */
+        /* - column-reverse: 아래에서 위로 */
+
+        .container {
+            background-color: powderblue;
+            height: 200px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* flex-basis: 기본 크기가 설정 (flex-direction에 따라 기본 width, height가 설정됨.) */
+
+        /* flex-grow: container를 채우는 속성 */
+        /* - item 하나에만 flex-grow를 설정하면 숫자에 상관없이 container를 채운다. */
+        /* - item 여러개에 flex-grow를 설정하면 비례해서 container를 채운다. */
+
+        /* flex-shrink: 원래 크기보다 더 작아졌을 때 어떻게 할지? (기본적으로 줄어들 공간이 있는 item들의 공간이 작아짐.) */
+        /* - 0으로 설정하면, 원래 크기보다 작아져도 크기 변화 X */
+        /* - 여러 item에 flex-shrink를 설정하면, 비례하여 줄어든다. */
+
+        .item {
+            background-color: tomato;
+            color: white;
+            border: 1px solid white;
+
+            /* container의 크기를 n빵하여 item이 나눠 갖는다.*/
+            /* flex-grow: 1; */
+        }
+
+        .item:nth-child(2) {
+            flex-basis: 300px;
+            flex-shrink: 0;
+            /* 다른 item보다 n분의 2만큼..*/
+            /* flex-grow: 2; */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+    </div>
+</body>
+
+</html>
