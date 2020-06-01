@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        a {
+            display: inline-block;
+            font-size: 3rem;
+
+            /* 모든 속성에 대해, 변화가 일어났을 때 적용된다. */
+            /* transition-property: all;
+            transition-duration: 0.1s; */
+            /* transition: all 0.1s; */
+            transition: font-size 1s, transform 0.1s;
+
+            /* 시간 지연 */
+            transition-delay: 1s;
+        }
+
+        a:active {
+            /* inline 레벨에서는 동작하지 않음. */
+            transform: translate(20px, 20px);
+            font-size: 2rem;
+        }
+
+        body {
+            background-color: black;
+            transition: all 1s;
+        }
+
+        body:hover {
+            background-color: white;
+        }
+
+        div {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            width: 100px;
+            height: 50px;
+
+            /* transition-timing-function 기본값은 ease */
+            transition: height 1s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+        }
+
+        div:hover {
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#">Click</a>
+    <div>TRANSITION</div>
+</body>
+
+</html>
