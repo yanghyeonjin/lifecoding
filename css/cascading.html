@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        /* style의 우선순위 */
+        /* 0: !important (권장 방법은 아님) */
+        /* 1: style attribute (inline) */
+        /* 2: id selector */
+        /* 3: class selector */
+        /* 4: tag selector */
+
+        li {
+            color: red;
+        }
+
+        #idsel {
+            color: blue;
+        }
+
+        .classsel {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>html</li>
+        <li id="idsel" class="classsel" style="color: powderblue;">css</li>
+        <li>javascript</li>
+    </ul>
+</body>
+
+</html>
