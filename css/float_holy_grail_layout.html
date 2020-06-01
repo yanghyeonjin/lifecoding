@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /* 테두리까지 기본 크기로 결정하겠다. */
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 540px;
+            border: 1px solid gray;
+            margin: auto;
+        }
+
+        header {
+            border-bottom: 1px solid gray;
+        }
+
+        nav {
+            float: left;
+            width: 120px;
+            border-right: 1px solid gray;
+        }
+
+        article {
+            width: 300px;
+            float: left;
+            border-left: 1px solid gray;
+            border-right: 1px solid gray;
+
+            /* border 겹침 현상 해결하기 위해 */
+            margin-left: -1px;
+        }
+
+        aside {
+            float: left;
+            width: 120px;
+            border-left: 1px solid gray;
+
+            /* border 겹침 현상 해결하기 위해 */
+            margin-left: -1px;
+        }
+
+        footer {
+            border-top: 1px solid gray;
+            clear: both;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>CSS</h1>
+        </header>
+        <nav>
+            <ul>
+                <li>position</li>
+                <li>float</li>
+                <li>flex</li>
+            </ul>
+        </nav>
+        <article>
+            <h2>float</h2>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit laboriosam, voluptatibus quaerat minus quo, recusandae fuga cum commodi natus, similique at quas reiciendis tempora cupiditate totam nobis. Tempora officiis hic, laborum reiciendis eos fugit distinctio. Earum quos qui, nesciunt nobis hic repellendus, non dolor voluptate tenetur voluptates, consequuntur doloremque ex?
+        </article>
+        <aside>
+            ad
+        </aside>
+        <footer>
+            copyleft
+        </footer>
+    </div>
+</body>
+
+</html>
