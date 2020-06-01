@@ -4,11 +4,30 @@
     <style>
         /* flex layout */
 
+        /* container(부모)에 적용되는 속성 */
+
         /* flex-direction: item이 정렬되는 방향 */
         /* - row: 왼쪽에서 오른쪽으로 (default) */
         /* - row-reverse: 오른쪽에서 왼쪽으로 */
         /* - column: 위에서 아래로 */
         /* - column-reverse: 아래에서 위로 */
+
+        /* flex-wrap: 아이템들 크기의 합이 container보다 클 때, 줄바꿈 여부 */
+        /* - nowrap: 줄바꿈하지않고 아이템의 크기가 줄어듦 (기본값) */
+        /* - wrap: 줄바꿈 (아이템 크기 그대로) */
+
+        /* align-items: flex-direction 방향의 수직방향 정렬 */
+        /* - stretch: container만큼 크기가 늘어남 (기본값) */
+        /* - center: 가운데 정렬 */
+        /* - flex-start: flex-direction 방향의 수직방향 시작점 */
+        /* - flex-end: flex-direction 방향의 수직방향 끝점 */
+
+        /* justify-content: flex-direction 방향의 정렬 */
+        /* - flex-start: flex-direction 방향의 시작점 */
+        /* - flex-end: flex-direction 방향의 끝점 */
+        /* - center: flex-direction 방향의 가운데 */
+
+        /* align-content: align-items와 비슷하지만, align-content는 item들이 여러 줄 있을 때 item 한 줄을 그룹으로 생각하고 그 그룹을 대상으로 정렬함. */
 
         .container {
             background-color: powderblue;
@@ -16,6 +35,8 @@
             display: flex;
             flex-direction: row;
         }
+
+        /* item(자식)에 적용되는 속성 */
 
         /* flex-basis: 기본 크기가 설정 (flex-direction에 따라 기본 width, height가 설정됨.) */
 
@@ -26,6 +47,12 @@
         /* flex-shrink: 원래 크기보다 더 작아졌을 때 어떻게 할지? (기본적으로 줄어들 공간이 있는 item들의 공간이 작아짐.) */
         /* - 0으로 설정하면, 원래 크기보다 작아져도 크기 변화 X */
         /* - 여러 item에 flex-shrink를 설정하면, 비례하여 줄어든다. */
+
+        /* align-self: align-items가 지정된 상태에서 특정 item의 정렬만 바꾸고 싶을 때 사용 */
+
+        /* order: item 순서를 바꾸고 싶을 때 */
+        /* - 각 아이템에 숫자로 순서 지정 (ex) nav {order: 2}) */
+        /* - 음수 가능 */
 
         .item {
             background-color: tomato;
