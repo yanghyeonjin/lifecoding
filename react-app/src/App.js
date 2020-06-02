@@ -12,4 +12,6 @@ class App extends Component {
   }
 }
 
+// npm install -g serve (간단한 웹서버)
+// serve -s build (실행)
 export default App;
