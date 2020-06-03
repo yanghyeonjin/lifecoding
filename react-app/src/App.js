@@ -3,9 +3,10 @@ import './App.css';
 
 // 파일 import
 import TOC from './components/TOC';
-import Content from './components/Content';
+import ReadContent from './components/ReadContent';
 import Subject from './components/Subject';
 import Control from './components/Control';
+import CreateContent from './components/CreateContent';
 
 // Component (커스텀 태그)를 만드는 코드
 // React가 갖고 있는 Component를 상속해서 새로운 클래스를 정의
@@ -35,11 +36,12 @@ class App extends Component {
 
   // render 함수: 어떤 HTML을 그릴것인지 결정하는 함수
   render() {
-    var _title, _desc = null;
+    var _title, _desc, _article = null;
 
     if (this.state.mode === 'welcome') {
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
+      _article = <ReadContent title={_title} desc={_desc}></ReadContent>
     } else if (this.state.mode === 'read') {
       var i = 0;
       while (i < this.state.contents.length) {
@@ -52,10 +54,13 @@ class App extends Component {
         }
         i = i + 1;
       }
+      _article = <ReadContent title={_title} desc={_desc}></ReadContent>
+    } else if (this.state.mode === 'create') {
+      _article = <CreateContent></CreateContent>
     }
 
     // render안에서의 this는 render함수를 가진 컴포넌트다.
-    console.log('App render', this);
+    // console.log('App render', this);
 
     return (
       <div className="App" >
@@ -89,7 +94,7 @@ class App extends Component {
               mode: _mode
             })
           }.bind(this)}></Control>
-        <Content title={_title} desc={_desc}></Content>
+        {_article}
       </div>
     )
   }
