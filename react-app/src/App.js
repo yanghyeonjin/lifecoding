@@ -7,6 +7,7 @@ import ReadContent from './components/ReadContent';
 import Subject from './components/Subject';
 import Control from './components/Control';
 import CreateContent from './components/CreateContent';
+import UpdateContent from './components/UpdateContent';
 
 // Component (커스텀 태그)를 만드는 코드
 // React가 갖고 있는 Component를 상속해서 새로운 클래스를 정의
@@ -39,8 +40,19 @@ class App extends Component {
     }
   }
 
-  // render 함수: 어떤 HTML을 그릴것인지 결정하는 함수
-  render() {
+  getReadContent() {
+    var i = 0;
+    while (i < this.state.contents.length) {
+      var data = this.state.contents[i];
+
+      if (data.id === this.state.selectedContentId) {
+        return data;
+      }
+      i = i + 1;
+    }
+  }
+
+  getContent() {
     var _title, _desc, _article = null;
 
     if (this.state.mode === 'welcome') {
@@ -48,18 +60,8 @@ class App extends Component {
       _desc = this.state.welcome.desc;
       _article = <ReadContent title={_title} desc={_desc}></ReadContent>
     } else if (this.state.mode === 'read') {
-      var i = 0;
-      while (i < this.state.contents.length) {
-        var data = this.state.contents[i];
-
-        if (data.id === this.state.selectedContentId) {
-          _title = data.title;
-          _desc = data.desc;
-          break;
-        }
-        i = i + 1;
-      }
-      _article = <ReadContent title={_title} desc={_desc}></ReadContent>
+      var _content = this.getReadContent();
+      _article = <ReadContent title={_content.title} desc={_content.desc}></ReadContent>
     } else if (this.state.mode === 'create') {
       _article = <CreateContent onSubmit={function (_title, _desc) {
         // add content to this.state.contents
@@ -86,8 +88,40 @@ class App extends Component {
         });
 
       }.bind(this)}></CreateContent>
+    } else if (this.state.mode === 'update') {
+      _content = this.getReadContent();
+      _article = <UpdateContent data={_content} onSubmit={function (_title, _desc) {
+        // add content to this.state.contents
+
+        // 새로운 목차 추가
+        this.lastContentId = this.lastContentId + 1;
+
+        // push는 원래 배열을 변경한다.
+        // concat을 이용하여 원래 배열은 유지하고 새로운 배열을 리턴받는 방법을 사용.
+
+        // * state를 변경할 때에는, push와 같은 original 데이터를 변경하는 방법을 쓰지 말자.
+        // * 그러면 Component 클래스 쪽에서 shouldComponentUpdate 함수를 사용할 때, 변경이 있는 경우에만 render함수를 호출하도록 제어할 수 있다. (큰 규모의 서비스에서 불필요한 렌더링은 성능의 문제의 원인이 될 수 있다.)
+
+        // this.state.contents.push({ id: this.lastContentId, title: _title, desc: _desc })
+        // var _contents = this.state.contents.concat({ id: this.lastContentId, title: _title, desc: _desc });
+
+        var newContents = Array.from(this.state.contents); // 똑같은 배열 복제
+        newContents.push({ id: this.lastContentId, title: _title, desc: _desc })
+
+        // react에게 state가 변경되었음을 알림.
+        this.setState({
+          // contents: _contents
+          contents: newContents
+        });
+
+      }.bind(this)}></UpdateContent>
     }
 
+    return _article
+  }
+
+  // render 함수: 어떤 HTML을 그릴것인지 결정하는 함수
+  render() {
     // render안에서의 this는 render함수를 가진 컴포넌트다.
     // console.log('App render', this);
 
@@ -123,7 +157,7 @@ class App extends Component {
               mode: _mode
             })
           }.bind(this)}></Control>
-        {_article}
+        {this.getContent()}
       </div>
     )
   }
