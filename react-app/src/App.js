@@ -43,6 +43,9 @@ class App extends Component {
       _desc = this.state.contents[0].desc;
     }
 
+    // render안에서의 this는 render함수를 가진 컴포넌트다.
+    console.log('App render', this);
+
     return (
       <div className="App" >
         {/* <Subject
@@ -50,6 +53,10 @@ class App extends Component {
           sub={this.state.subject.sub}></Subject> */}
         <header>
           <h1><a href="/" onClick={function (e) {
+            // 여기에서는 this가 undefined
+            // App Component의 this를 쓰기 위해 bind(this)해준다.
+            console.log('onClick', this);
+
             // a 태그의 기본적인 동작방법을 막는다.
             e.preventDefault();
 
