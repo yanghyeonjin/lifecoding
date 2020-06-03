@@ -74,11 +74,15 @@ class App extends Component {
         // * 그러면 Component 클래스 쪽에서 shouldComponentUpdate 함수를 사용할 때, 변경이 있는 경우에만 render함수를 호출하도록 제어할 수 있다. (큰 규모의 서비스에서 불필요한 렌더링은 성능의 문제의 원인이 될 수 있다.)
 
         // this.state.contents.push({ id: this.lastContentId, title: _title, desc: _desc })
-        var _contents = this.state.contents.concat({ id: this.lastContentId, title: _title, desc: _desc });
+        // var _contents = this.state.contents.concat({ id: this.lastContentId, title: _title, desc: _desc });
+
+        var newContents = Array.from(this.state.contents); // 똑같은 배열 복제
+        newContents.push({ id: this.lastContentId, title: _title, desc: _desc })
 
         // react에게 state가 변경되었음을 알림.
         this.setState({
-          contents: _contents
+          // contents: _contents
+          contents: newContents
         });
 
       }.bind(this)}></CreateContent>
