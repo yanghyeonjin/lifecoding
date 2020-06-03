@@ -71,6 +71,8 @@ class App extends Component {
         // concat을 이용하여 원래 배열은 유지하고 새로운 배열을 리턴받는 방법을 사용.
 
         // * state를 변경할 때에는, push와 같은 original 데이터를 변경하는 방법을 쓰지 말자.
+        // * 그러면 Component 클래스 쪽에서 shouldComponentUpdate 함수를 사용할 때, 변경이 있는 경우에만 render함수를 호출하도록 제어할 수 있다. (큰 규모의 서비스에서 불필요한 렌더링은 성능의 문제의 원인이 될 수 있다.)
+
         // this.state.contents.push({ id: this.lastContentId, title: _title, desc: _desc })
         var _contents = this.state.contents.concat({ id: this.lastContentId, title: _title, desc: _desc });
 

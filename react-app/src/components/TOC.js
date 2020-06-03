@@ -4,6 +4,18 @@ import React, { Component } from 'react';
 // Table of Component
 // 목차
 class TOC extends Component {
+    // shouldComponentUpdate 다음에 render 실행된다.
+    // return true면 render 호출 / false면 render 호출 안 됨
+
+    // newProps: props가 바뀌었을 때, 그 값
+    // newState: state가 바뀌었을 때, 그 값
+    shouldComponentUpdate(newProps, newState) {
+        if (this.props.data === newProps.data) {
+            return false;
+        }
+        return true;
+    }
+
     render() {
         var lists = [];
         var data = this.props.data;
