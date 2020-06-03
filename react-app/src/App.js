@@ -21,6 +21,11 @@ class App extends Component {
     // props나 state가 변경되면, 해당 props/state를 가진 컴포넌트의 render함수가 다시 호출된다.
     // 하위에 있는 컴포넌트들의 render함수도 다시 호출됨.
     // 페이지 다시 그려짐.
+
+    // UI 변경과 관련없는 데이터들은 state에 저장 안해도 된다.
+    // 불필요한 렌더링은 되지 않도록.
+    this.lastContentId = 3;
+
     this.state = {
       mode: "read",
       selectedContentId: 2,
@@ -58,7 +63,22 @@ class App extends Component {
     } else if (this.state.mode === 'create') {
       _article = <CreateContent onSubmit={function (_title, _desc) {
         // add content to this.state.contents
-        console.log(_title, _desc)
+
+        // 새로운 목차 추가
+        this.lastContentId = this.lastContentId + 1;
+
+        // push는 원래 배열을 변경한다.
+        // concat을 이용하여 원래 배열은 유지하고 새로운 배열을 리턴받는 방법을 사용.
+
+        // * state를 변경할 때에는, push와 같은 original 데이터를 변경하는 방법을 쓰지 말자.
+        // this.state.contents.push({ id: this.lastContentId, title: _title, desc: _desc })
+        var _contents = this.state.contents.concat({ id: this.lastContentId, title: _title, desc: _desc });
+
+        // react에게 state가 변경되었음을 알림.
+        this.setState({
+          contents: _contents
+        });
+
       }.bind(this)}></CreateContent>
     }
 
