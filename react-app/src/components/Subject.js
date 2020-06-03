@@ -11,7 +11,16 @@ class Subject extends Component {
     render() {
         return (
             <header>
-                <h1><a href="/">{this.props.title}</a></h1>
+                <h1><a href="/" onClick={function (e) {
+                    // 여기에서는 this가 undefined
+                    // App Component의 this를 쓰기 위해 bind(this)해준다.
+                    // console.log('onClick', this);
+
+                    // a 태그의 기본적인 동작방법을 막는다.
+                    e.preventDefault();
+
+                    this.props.onChangePage();
+                }.bind(this)}>{this.props.title}</a></h1>
                 {this.props.sub}
             </header>
         );

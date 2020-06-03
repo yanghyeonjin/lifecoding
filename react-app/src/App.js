@@ -48,18 +48,10 @@ class App extends Component {
 
     return (
       <div className="App" >
-        {/* <Subject
+        <Subject
           title={this.state.subject.title}
-          sub={this.state.subject.sub}></Subject> */}
-        <header>
-          <h1><a href="/" onClick={function (e) {
-            // 여기에서는 this가 undefined
-            // App Component의 this를 쓰기 위해 bind(this)해준다.
-            console.log('onClick', this);
-
-            // a 태그의 기본적인 동작방법을 막는다.
-            e.preventDefault();
-
+          sub={this.state.subject.sub}
+          onChangePage={function () {
             // 아래 코드에서 this는 App Component가 아니라 함수를 가리키는 것 같다.
             // 함수가 끝난 직후 bind 넣어주자. 그러면 this가 가리키는게 App Component가 된다.
             // 그리고 아래처럼 코드를 작성해도 state의 값이 바뀌지 않는다. react의 문법대로 해야한다.
@@ -70,9 +62,7 @@ class App extends Component {
             this.setState({
               mode: 'welcome'
             })
-          }.bind(this)}>{this.state.subject.title}</a></h1>
-          {this.state.subject.sub}
-        </header>
+          }.bind(this)}></Subject>
         <TOC data={this.state.contents}></TOC>
         <Content title={_title} desc={_desc}></Content>
       </div>
