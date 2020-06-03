@@ -21,6 +21,7 @@ class App extends Component {
     // 페이지 다시 그려짐.
     this.state = {
       mode: "read",
+      selectedContentId: 2,
       subject: { title: "WEB", sub: "World Wide Web!" },
       welcome: { title: "Welcome", desc: "Hello, React!!" },
       contents: [
@@ -39,8 +40,17 @@ class App extends Component {
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
     } else if (this.state.mode === 'read') {
-      _title = this.state.contents[0].title;
-      _desc = this.state.contents[0].desc;
+      var i = 0;
+      while (i < this.state.contents.length) {
+        var data = this.state.contents[i];
+
+        if (data.id === this.state.selectedContentId) {
+          _title = data.title;
+          _desc = data.desc;
+          break;
+        }
+        i = i + 1;
+      }
     }
 
     // render안에서의 this는 render함수를 가진 컴포넌트다.
@@ -65,10 +75,11 @@ class App extends Component {
           }.bind(this)}></Subject>
         <TOC
           data={this.state.contents}
-          onChangePage={function () {
-            alert('hi')
+          onChangePage={function (id) {
+
             this.setState({
-              mode: 'read'
+              mode: 'read',
+              selectedContentId: Number(id)
             })
           }.bind(this)}></TOC>
         <Content title={_title} desc={_desc}></Content>
