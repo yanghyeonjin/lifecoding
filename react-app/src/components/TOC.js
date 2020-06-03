@@ -5,12 +5,20 @@ import React, { Component } from 'react';
 // 목차
 class TOC extends Component {
     render() {
+        var lists = [];
+        var data = this.props.data;
+        var i = 0;
+
+        while (i < data.length) {
+            // 여러 개를 자동적으로 생성할 때에는, key 속성을 넣어주어야 한다. (유니크한 값으로)
+            lists.push(<li key={data[i].id}><a href={"/content/" + data[i].id}>{data[i].title}</a></li>);
+            i = i + 1;
+        }
+
         return (
             <nav>
                 <ul>
-                    <li><a href="1.html">HTML</a></li>
-                    <li><a href="2.html">CSS</a></li>
-                    <li><a href="3.html">JavaScript</a></li>
+                    {lists}
                 </ul>
             </nav>
         );
