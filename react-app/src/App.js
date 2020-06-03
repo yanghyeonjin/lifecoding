@@ -20,7 +20,7 @@ class App extends Component {
     // 하위에 있는 컴포넌트들의 render함수도 다시 호출됨.
     // 페이지 다시 그려짐.
     this.state = {
-      mode: "welcome",
+      mode: "read",
       subject: { title: "WEB", sub: "World Wide Web!" },
       welcome: { title: "Welcome", desc: "Hello, React!!" },
       contents: [
@@ -52,7 +52,17 @@ class App extends Component {
           <h1><a href="/" onClick={function (e) {
             // a 태그의 기본적인 동작방법을 막는다.
             e.preventDefault();
-          }}>{this.state.subject.title}</a></h1>
+
+            // 아래 코드에서 this는 App Component가 아니라 함수를 가리키는 것 같다.
+            // 함수가 끝난 직후 bind 넣어주자. 그러면 this가 가리키는게 App Component가 된다.
+            // 그리고 아래처럼 코드를 작성해도 state의 값이 바뀌지 않는다. react의 문법대로 해야한다.
+
+            // this.state.mode = 'welcome';
+
+            this.setState({
+              mode: 'welcome'
+            })
+          }.bind(this)}>{this.state.subject.title}</a></h1>
           {this.state.subject.sub}
         </header>
         <TOC data={this.state.contents}></TOC>
