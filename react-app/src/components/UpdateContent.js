@@ -5,6 +5,7 @@ class UpdateContent extends Component {
         super(props);
 
         this.state = {
+            id: this.props.data.id,
             title: this.props.data.title,
             desc: this.props.data.desc
         }
@@ -23,11 +24,12 @@ class UpdateContent extends Component {
         return (
             <article>
                 <h2>Update</h2>
-                <form action="/create_process" method="POST" onSubmit={function (e) {
+                <form action="/update_process" method="POST" onSubmit={function (e) {
                     e.preventDefault();
 
-                    this.props.onSubmit(e.target.title.value, e.target.desc.value)
+                    this.props.onSubmit(this.state.id, this.state.title, this.state.desc)
                 }.bind(this)}>
+                    <input type="hidden" name="id" value={this.state.id} />
                     {/* 
                     value에 default 값을 셋팅
                     1. this.props 사용 -> X (props는 readonly)

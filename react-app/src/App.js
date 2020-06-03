@@ -84,34 +84,30 @@ class App extends Component {
         // react에게 state가 변경되었음을 알림.
         this.setState({
           // contents: _contents
-          contents: newContents
+          contents: newContents,
+          mode: 'read',
+          selectedContentId: this.lastContentId // 새로운 내용 추가 후, 상세보기로 전환
         });
 
       }.bind(this)}></CreateContent>
     } else if (this.state.mode === 'update') {
       _content = this.getReadContent();
-      _article = <UpdateContent data={_content} onSubmit={function (_title, _desc) {
-        // add content to this.state.contents
+      _article = <UpdateContent data={_content} onSubmit={function (_id, _title, _desc) {
+        var _contents = Array.from(this.state.contents);
 
-        // 새로운 목차 추가
-        this.lastContentId = this.lastContentId + 1;
-
-        // push는 원래 배열을 변경한다.
-        // concat을 이용하여 원래 배열은 유지하고 새로운 배열을 리턴받는 방법을 사용.
-
-        // * state를 변경할 때에는, push와 같은 original 데이터를 변경하는 방법을 쓰지 말자.
-        // * 그러면 Component 클래스 쪽에서 shouldComponentUpdate 함수를 사용할 때, 변경이 있는 경우에만 render함수를 호출하도록 제어할 수 있다. (큰 규모의 서비스에서 불필요한 렌더링은 성능의 문제의 원인이 될 수 있다.)
-
-        // this.state.contents.push({ id: this.lastContentId, title: _title, desc: _desc })
-        // var _contents = this.state.contents.concat({ id: this.lastContentId, title: _title, desc: _desc });
-
-        var newContents = Array.from(this.state.contents); // 똑같은 배열 복제
-        newContents.push({ id: this.lastContentId, title: _title, desc: _desc })
+        var i = 0;
+        while (i < _contents.length) {
+          if (_contents[i].id === _id) {
+            _contents[i] = { id: _id, title: _title, desc: _desc };
+            break;
+          }
+          i = i + 1;
+        }
 
         // react에게 state가 변경되었음을 알림.
         this.setState({
-          // contents: _contents
-          contents: newContents
+          contents: _contents,
+          mode: 'read' // 수정하고 나서 바로 상세보기로 바꾸기
         });
 
       }.bind(this)}></UpdateContent>
