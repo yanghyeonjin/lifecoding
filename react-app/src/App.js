@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import './App.css';
 
 // 파일 import
-import TOC from './components/TOC'
+import TOC from './components/TOC';
 import Content from './components/Content';
-import Subject from './components/Subject'
+import Subject from './components/Subject';
+import Control from './components/Control';
 
 // Component (커스텀 태그)를 만드는 코드
 // React가 갖고 있는 Component를 상속해서 새로운 클래스를 정의
@@ -82,6 +83,12 @@ class App extends Component {
               selectedContentId: Number(id)
             })
           }.bind(this)}></TOC>
+        <Control
+          onChangeMode={function (_mode) {
+            this.setState({
+              mode: _mode
+            })
+          }.bind(this)}></Control>
         <Content title={_title} desc={_desc}></Content>
       </div>
     )
