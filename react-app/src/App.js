@@ -66,6 +66,7 @@ class App extends Component {
 
             // this.state.mode = 'welcome';
 
+            // state를 변경할 때
             this.setState({
               mode: 'welcome'
             })
