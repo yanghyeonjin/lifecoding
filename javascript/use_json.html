@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="timezones"></p>
+    <input type="button" id="execute" value="execute">
+    <script>
+        document.querySelector('input').addEventListener('click', function (e) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "./use_json.php");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var _tzs = xhr.responseText;
+                    // var tzs = _tzs.split(',');
+                    var tzs = JSON.parse(_tzs); // tzs는 다시 배열이 된다.
+                    var _str = '';
+
+                    for (var i = 0; i < tzs.length; i++) {
+                        _str += '<li>' + tzs[i] + '</li>';
+                    }
+                    _str = '<ul>' + _str + '</ul>';
+                    document.querySelector('#timezones').innerHTML = _str;
+                }
+            }
+            xhr.send();
+        })
+    </script>
+</body>
+
+</html>
