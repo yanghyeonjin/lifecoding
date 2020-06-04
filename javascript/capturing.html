@@ -41,10 +41,27 @@
             // this.nodeName: 현재 실행된 이벤트 핸들러가 어떤 Element의 소속인지
             console.log(event.target.nodeName, this.nodeName, phases[event.eventPhase - 1]);
         }
-        document.getElementById('target').addEventListener('click', handler, true);
-        document.querySelector('fieldset').addEventListener('click', handler, true);
-        document.querySelector('body').addEventListener('click', handler, true);
-        document.querySelector('html').addEventListener('click', handler, true);
+
+        function stopHandler(event) {
+            var phases = ['capturing', 'target', 'bubbling'];
+            console.log(event.target.nodeName, this.nodeName, phases[event.eventPhase - 1]);
+            event.stopPropagation(); // 이후 이벤트 전파 끝내겠다.
+        }
+
+        // 캡처링 (바깥쪽 Element의 이벤트 핸들러부터 호출됨.)
+        // document.getElementById('target').addEventListener('click', handler, true);
+        // document.querySelector('fieldset').addEventListener('click', handler, true);
+        // document.querySelector('body').addEventListener('click', handler, true);
+        // document.querySelector('html').addEventListener('click', handler, true);
+
+        // 버블링 (안쪽 Element의 이벤트 핸들러부터 호출됨.)
+        document.getElementById('target').addEventListener('click', handler, false);
+        document.querySelector('fieldset').addEventListener('click', handler, false);
+        document.querySelector('body').addEventListener('click', stopHandler, false); // 이벤트 전파는 여기서 끝
+        document.querySelector('html').addEventListener('click', handler, false);
+
+        // ==> addEventListener의 3번째 인자: 캡처링으로 동작할 것인가?
+        // 기본값은 false
     </script>
 </body>
 
