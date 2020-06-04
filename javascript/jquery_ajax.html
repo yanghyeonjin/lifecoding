@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>time : <span id="time"></span></p>
+    <form>
+        <select name="timezone">
+            <option value="Asia/Seoul">Asia/Seoul</option>
+            <option value="America/New_York">America/New_York</option>
+        </select>
+        <select name="format">
+            <option value="Y-m-d H:i:s">Y-m-d H:i:s</option>
+            <option value="Y-m-d">Y-m-d</option>
+        </select>
+        <input type="button" id="execute" value="execute">
+    </form>
+
+    <p id="timezones"></p>
+    <input type="button" id="get" value="get">
+
+    <script src="./jquery-3.5.1.min.js"></script>
+    <script>
+        $('#execute').click(function () {
+            $.ajax({
+                url: './jquery_ajax.php',
+                type: "POST",
+                data: $('form').serialize(), // key=value&key=value&key=value...
+                dataType: "JSON", // JSON으로 받겠다. (서버 쪽에서 JSON으로 전달)
+                success: function (data) {
+                    $('#time').text(data);
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $('#get').click(function () {
+            $.ajax({
+                url: './jquery_ajax2.php',
+                dataType: "JSON", // JSON으로 받겠다. (서버 쪽에서 JSON으로 전달)
+                success: function (data) {
+                    var str = '';
+                    for (var i in data) {
+                        str += '<li>' + data[i] + '</li>';
+                    }
+                    $('#timezones').html('<ul>' + str + '</ul>');
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>
