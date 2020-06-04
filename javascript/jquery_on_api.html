@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./jquery-3.5.1.min.js"></script>
+    <script>
+        $('body').on('click', 'a, li', function (e) {
+            // 'a, li' : selector
+
+            // 2. 나중에 element가 생성되었을 때에도 해당 element에 이벤트가 적용되는 효과를 준다.
+            // -> body는 이미 나와있으므로 적용 가능.
+            console.log(this.tagName);
+        })
+    </script>
+
+    <ul>
+        <li><a href="#">HTML</a></li>
+        <li><a href="#">CSS</a></li>
+        <li><a href="#">JavaScript</a></li>
+    </ul>
+
+    <!-- <script src="./jquery-3.5.1.min.js"></script>
+    <script>
+        $('ul').on('click', 'a, li', function (e) {
+            // 'a, li' : selector
+
+            // 1. selector는 필터링 기능이 있다.
+            // -> ul에 이벤트를 달기는 했지만, 사용자가 a태그, li태그를 클릭했을 때에만 이벤트가 동작함.
+            console.log(this.tagName);
+        })
+    </script> -->
+
+
+    <input type="text" id="target">
+    <p id="status"></p>
+    <script>
+        // 다중 등록 가능
+
+        // 방법 1
+        // $('#target').on('focus blur', function (e) {
+        //     $('#status').html(e.type);
+        // })
+
+        // 방법 2
+        var handler = function (e) {
+            $('#status').html(e.type);
+        }
+        // $('#target').on({
+        //     'focus': handler,
+        //     'blur': handler
+        // })
+
+        // 방법 3
+        $('#target').on('focus', handler).on('blur', handler)
+    </script>
+
+
+
+    <input type="text" id="target2">
+    <input type="button" value="remove" id="remove">
+    <p id="status2"></p>
+    <script>
+        var handler2 = function (e) {
+            $('#status2').text(e.type + Math.random());
+        };
+        $('#target2').on('focus blur', handler2);
+        $('#target2').on('focus', function (e) {
+            console.log('focus');
+        });
+        $('#remove').on('click', function (e) {
+            $('#target2').off('focus'); // 등록된 focus 이벤트 모두 삭제
+            // $('#target2').off('focus', handler); // handler를 가진 이벤트만 삭제
+        })
+    </script>
+</body>
+
+</html>
