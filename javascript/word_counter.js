@@ -6,5 +6,8 @@ var entireText = document.getElementsByTagName('body')[0].innerText; // body 태
 var splitedText = entireText.split(' ');
 
 // 4. 등장 횟수를 계산하고
+for (var i = 0; i < splitedText.length; i++) {
+
+}
 // 5. 정렬한 후에
 // 6. 콘솔창에 출력한다.
