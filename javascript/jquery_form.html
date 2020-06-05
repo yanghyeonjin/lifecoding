@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text">
+    <span class="span1"></span>
+
+    <p>Type 'correct' to validate.</p>
+    <form action="javascript:alert('success!');" class="validation">
+        <div>
+            <input type="text">
+            <input type="submit">
+        </div>
+    </form>
+    <span class="span2"></span>
+
+    <script src="./jquery-3.5.1.min.js"></script>
+    <script>
+        (function ($) {
+            $('input').on({
+                'focus': function () {
+                    // $(this) 다음에 나오는 형제 element중에 span을 찾겠다.
+                    $(this).next('.span1').html('focus');
+                },
+                'blur': function () {
+                    $(this).next('.span1').html('blur');
+                },
+                'change': function (e) {
+                    alert('change!! ' + $(e.target).val());
+                },
+                // input안에 있는 내용들 선택할 때 (드래그 했을 때)
+                'select': function () {
+                    $(this).next('.span1').html('select');
+                }
+            })
+        })(jQuery);
+    </script>
+
+    <script>
+        (function ($) {
+            $('form').on('submit', function () {
+                if ($('.validation input:first').val() == "correct") {
+                    // show() 어떤 element가 감춰져 있을 때, 다시 나타나도록 하는 것
+                    $('.span2').text("Validated...").show();
+                    return true; // 이벤트가 원래 작동하던대로 실행 (action으로 설정했던 것을 제대로 실행)
+                }
+                $('.span2').text("Not valid!").show().fadeOut(1000);
+                return false; // (action 설정한 것 실행 안 됨.)
+            })
+        })(jQuery)
+    </script>
+</body>
+
+</html>
