@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul>
+        <li>test2</li>
+    </ul>
+    <ul class="foo">
+        <li>test</li>
+    </ul>
+
+    <script src="./jquery-3.5.1.min.js"></script>
+
+    <!-- jquery를 안전하게 사용하는 방법 (다른 라이브러리와 충돌없이 사용하는 방법) -->
+    <!-- 다른 라이브러리에도 $가 있을 수 있기 때문 -->
+    <script>
+        (function ($) {
+            // 내부에 jquery 코드 작성
+            $('body').prepend('hello world');
+        })(jQuery);
+    </script>
+
+    <!-- 요소 선택 -->
+    <script>
+        (function ($) {
+            $('ul.foo').on('click', function () {
+                // 여기서 this는 ul.foo에 해당하는 element (context의 역할)
+                // ul.foo의 li에만 적용
+                $('li', this).css('background-color', 'red');
+
+                // 아래 코드는 여러 요소 선택할 때 (따옴표 위치 잘 확인)
+                // $('li, body').css('background-color', 'blue');
+            })
+        })(jQuery)
+    </script>
+</body>
+
+</html>
