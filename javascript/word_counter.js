@@ -30,7 +30,7 @@ for (var key in countedWord) {
 countedWordArr.sort(function (a, b) {
     // a와 b는 [key, countedWord[key]]의 형태로 들어있음. (배열임.)
     return b[1] - a[1];
-})
+});
 // 6. 콘솔창에 출력한다. -> 북마크해서 사용자에게 보여주기 위해 alert으로 변경
 var str = '';
 for (var i = 0; i < countedWordArr.length; i++) {
@@ -38,3 +38,8 @@ for (var i = 0; i < countedWordArr.length; i++) {
 }
 
 alert(str);
+
+// 북마클릿을 만들어주는 사이트: http://mrcoles.com/bookmarklet/
+// 북마클릿하기 위해 코드를 한 줄로 바꿀 것임.
+// 세미콜론으로 명령을 구분함.
+// 주석 삭제
