@@ -20,4 +20,15 @@ for (var i = 0; i < splitedText.length; i++) {
     }
 }
 // 5. 정렬한 후에
+
+// 정렬하기 위해 배열로 이동
+var countedWordArr = new Array();
+for (var key in countedWord) {
+    countedWordArr.push([key, countedWord[key]]);
+}
+
+countedWordArr.sort(function (a, b) {
+    // a와 b는 [key, countedWord[key]]의 형태로 들어있음. (배열임.)
+    return a[1] - b[1];
+})
 // 6. 콘솔창에 출력한다.
