@@ -27,6 +27,167 @@
         <a class="item">Reviews</a>
         <a class="item active">Upcoming Events</a>
     </div>
+
+    <!-- dropdown -->
+    <h1>Dropdown</h1>
+    <div class="ui dropdown">
+        <div class="text">File</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            <div class="item">New</div>
+            <div class="item">
+                <span class="description">ctrl + o</span>
+                Open...
+            </div>
+            <div class="item">
+                <span class="description">ctrl + s</span>
+                Save as...
+            </div>
+            <div class="item">
+                <span class="description">ctrl + r</span>
+                Rename
+            </div>
+            <div class="item">Make a copy</div>
+            <div class="item">
+                <i class="folder icon"></i>
+                Move to folder
+            </div>
+            <div class="item">
+                <i class="trash icon"></i>
+                Move to trash
+            </div>
+            <div class="divider"></div>
+            <div class="item">Download As...</div>
+            <div class="item">
+                <i class="dropdown icon"></i>
+                Publish To Web
+                <div class="menu">
+                    <div class="item">Google Docs</div>
+                    <div class="item">Google Drive</div>
+                    <div class="item">Dropbox</div>
+                    <div class="item">Adobe Creative Cloud</div>
+                    <div class="item">Private FTP</div>
+                    <div class="item">Another Service...</div>
+                </div>
+            </div>
+            <div class="item">E-mail Collaborators</div>
+        </div>
+    </div>
+
+    <!-- accordion -->
+    <h1>Accordion</h1>
+    <div class="ui styled accordion">
+        <div class="active title">
+            <i class="dropdown icon"></i>
+            Level 1
+        </div>
+        <div class="active content">
+            Welcome to level 1
+            <div class="accordion">
+                <div class="active title">
+                    <i class="dropdown icon"></i>
+                    Level 1A
+                </div>
+                <div class="active content">
+                    <p>Level 1A Contents</p>
+                    <div class="accordion">
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            Level 1A-A
+                        </div>
+                        <div class="content">
+                            Level 1A-A Contents
+                        </div>
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            Level 1A-B
+                        </div>
+                        <div class="content">
+                            Level 1A-B Contents
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    Level 1B
+                </div>
+                <div class="content">
+                    Level 1B Contents
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    Level 1C
+                </div>
+                <div class="content">
+                    Level 1C Contents
+                </div>
+            </div>
+        </div>
+        <div class="title">
+            <i class="dropdown icon"></i>
+            Level 2
+        </div>
+        <div class="content">
+            <p>Welcome to level 2</p>
+            <div class="accordion">
+                <div class="active title">
+                    <i class="dropdown icon"></i>
+                    Level 2A
+                </div>
+                <div class="active content">
+                    <p>Level 2A Contents</p>
+                    <div class="accordion">
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            Level 2A-A
+                        </div>
+                        <div class="content">
+                            Level 2A-A Contents
+                        </div>
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            Level 2A-B
+                        </div>
+                        <div class="content">
+                            Level 2A-B Contents
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    Level 2B
+                </div>
+                <div class="content">
+                    Level 2B Contents
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    Level 2C
+                </div>
+                <div class="content">
+                    Level 2C Contents
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function ($) {
+            $('.ui.dropdown').dropdown({
+                direction: 'downward',
+                duration: 500,
+                onChange: function (value, text, $choice) {
+                    console.log(value, text, $choice)
+                }
+            });
+        })(jQuery);
+    </script>
+
+    <script>
+        (function ($) {
+            $('.ui.accordion').accordion();
+        })(jQuery)
+    </script>
 </body>
 
 </html>
