@@ -29,9 +29,12 @@ for (var key in countedWord) {
 
 countedWordArr.sort(function (a, b) {
     // a와 b는 [key, countedWord[key]]의 형태로 들어있음. (배열임.)
-    return a[1] - b[1];
+    return b[1] - a[1];
 })
-// 6. 콘솔창에 출력한다.
+// 6. 콘솔창에 출력한다. -> 북마크해서 사용자에게 보여주기 위해 alert으로 변경
+var str = '';
 for (var i = 0; i < countedWordArr.length; i++) {
-    console.log(countedWordArr[i][0], countedWordArr[i][1]);
+    str = str + (countedWordArr[i][0] + " : " + countedWordArr[i][1]) + "\n";
 }
+
+alert(str);
