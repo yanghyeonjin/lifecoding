@@ -14,6 +14,10 @@
         body {
             padding: 1rem;
         }
+
+        .column {
+            border: 1px solid black;
+        }
     </style>
 </head>
 
@@ -198,6 +202,68 @@
         <div class="ui fluid container">
             <h1>Fluid Container</h1>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia debitis, ex dolor necessitatibus ut recusandae nulla amet sit nesciunt, reprehenderit eaque fugiat! Incidunt vero laborum aperiam. Animi in ullam ex nemo quod vel voluptates exercitationem ipsam asperiores, dicta laborum magnam commodi eum accusantium, nobis totam, sapiente qui? Aperiam, earum consectetur? Laudantium eum autem impedit voluptatum enim aliquid voluptas iure, veniam dolores magni, ipsam, esse obcaecati officiis tempora consequatur incidunt. Facilis tempora ab doloremque, eius sint iusto? Quibusdam, vitae aliquid explicabo itaque atque quis accusantium, quo voluptates nisi iure, autem omnis dolor magnam rem sed incidunt sint est earum consectetur mollitia!</p>
+        </div>
+
+        <!-- semantic ui 라이브러리는 화면을 기본적으로 16등분 한다. -->
+        <h1>Basic Grid</h1>
+        <div class="ui grid">
+            <div class="column">item 1</div>
+            <div class="column">item 2</div>
+            <div class="column">item 3</div>
+            <div class="column">item 4</div>
+            <div class="column">item 5</div>
+            <div class="column">item 6</div>
+            <div class="column">item 7</div>
+            <div class="column">item 8</div>
+            <div class="column">item 9</div>
+            <div class="column">item 10</div>
+            <div class="column">item 11</div>
+            <div class="column">item 12</div>
+            <div class="column">item 13</div>
+            <div class="column">item 14</div>
+            <div class="column">item 15</div>
+            <div class="column">item 16</div>
+        </div>
+
+        <!-- 한 줄 안에서 나누려면 나눠가진 합이 16이 되어야 함. -->
+        <h1>Merge Grid</h1>
+        <div class="ui grid">
+            <div class="three wide column">3 items</div>
+            <div class="four wide column">
+                <!-- fluid를 넣어주면 자기가 속한 영역에 width 100% -->
+                <select class="ui fluid dropdown">
+                    <option value="">Gender</option>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+            </div>
+            <div class="five wide column">5 items</div>
+            <div class="two wide column">2 items</div>
+            <div class="two wide column">2 items</div>
+        </div>
+
+        <!-- grid를 쓸건데 화면 전체를 16등분이 아닌 4등분을 쓰겠다. -->
+        <h1>Custom Width Grid</h1>
+        <div class="ui four column grid">
+            <div class="column">item 1</div>
+            <div class="column">item</div>
+            <div class="column">item</div>
+            <div class="column">item</div>
+        </div>
+
+        <!-- 행을 명시적으로 표시해주는게 좋다. -->
+        <h1>Grid Row</h1>
+        <div class="ui four column grid">
+            <div class="row">
+                <div class="column">item</div>
+                <div class="column">item</div>
+            </div>
+            <div class="row">
+                <div class="column">item</div>
+                <div class="column">item</div>
+                <div class="column">item</div>
+                <div class="column">item</div>
+            </div>
         </div>
     </div>
 
