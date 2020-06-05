@@ -54,6 +54,10 @@
         <li class="bar">list item 3</li>
     </ul>
 
+    <input type="button" id="click_me" value="click me">
+    <input type="button" id="remove_event" value="remove event">
+    <input type="button" id="trigger_event" value="trigger event">
+
     <script src="./jquery-3.5.1.min.js"></script>
 
     <!-- jquery를 안전하게 사용하는 방법 (다른 라이브러리와 충돌없이 사용하는 방법) -->
@@ -201,7 +205,38 @@
                 .end() // 마지막으로 사용한 대상 변경(?)을 끝냄. -> find('.foo')를 끝냄.
                 .find('.bar') // 대상이 ul.first .bar로 됨.
                 .css('background-color', 'green');
-        })(jQuery)
+        })(jQuery);
+    </script>
+
+    <!-- event -->
+    <script>
+        (function ($) {
+            function clickHandler(e) {
+                alert('thank you');
+            }
+
+            // DOM이 준비되었을 때
+            $(document).ready(function () {
+                // id=click_me인 element에 click 이벤트 설치
+                $('#click_me').on('click', clickHandler);
+
+                // id=remove_event인 element에 click 이벤트 설치
+                // 클릭 시, id=click_me에 있는 click 이벤트 제거 (clickHandler만 삭제)
+                $('#remove_event').on('click', function (e) {
+                    $('#click_me').off('click', clickHandler);
+                });
+
+                // id=trigger_event인 element에 click 이벤트 설치
+                // 클릭 시, id=click_me의 click 이벤트를 호출.
+                $('#trigger_event').on('click', function (e) {
+                    $('#click_me').trigger('click');
+                })
+
+                $('#click_me').click(function () {
+                    console.log(`i am event helper!!`);
+                })
+            })
+        })(jQuery);
     </script>
 </body>
 
