@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        div {
+            width: 300px;
+            height: 300px;
+            background-color: red;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="button" id="fadeout" value="fade out">
+    <input type="button" id="fadein" value="fade in">
+    <input type="button" id="hide" value="hide">
+    <input type="button" id="show" value="show">
+    <input type="button" id="slidedown" value="slide down">
+    <input type="button" id="slideup" value="slide up">
+    <input type="button" id="mix" value="mix">
+    <button type="button" id="go">&raquo;Run</button>
+
+    <div id="target">target</div>
+
+    <script src="./jquery-3.5.1.min.js"></script>
+    <script>
+        (function ($) {
+            $('input[type="button"]').on('click', function (e) {
+                var $this = $(e.target);
+
+                switch ($this.attr('id')) {
+                    case 'fadeout':
+                        $('#target').fadeOut('slow');
+                        break;
+                    case 'fadein':
+                        $('#target').fadeIn('slow');
+                        break;
+                    case 'hide':
+                        $('#target').hide();
+                        break;
+                    case 'show':
+                        $('#target').show();
+                        break;
+                    case 'slidedown':
+                        $('#target').hide().slideDown('slow');
+                        break;
+                    case 'slideup':
+                        $('#target').show().slideUp('slow');
+                        break;
+                    case 'mix':
+                        $('#target').
+                            fadeOut('slow').
+                            fadeIn('slow').
+                            delay(1000).
+                            slideUp().
+                            slideDown('slow', function () {
+                                // slide down 끝나고 실행
+                                alert('end')
+                            });
+                        break;
+                }
+            })
+
+            $('#go').on('click', function () {
+                $('#target').animate({
+                    width: "500px",
+                    opacity: 0.4,
+                    marginLeft: "50px",
+                    fontSize: "30px",
+                    borderWidth: "10px"
+                }, 3000); // 3초 동안 실행
+            })
+        })(jQuery);
+    </script>
+</body>
+
+</html>
