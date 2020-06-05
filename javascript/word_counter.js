@@ -9,7 +9,7 @@ var splitedText = entireText.split(' ');
 var countedWord = {};
 
 for (var i = 0; i < splitedText.length; i++) {
-    var word = splitedText[i];
+    var word = splitedText[i].toLowerCase(); // 대소문자 구분 X
 
     if (countedWord[word] == undefined) {
         // 값이 정해지지 않았다면
@@ -32,3 +32,6 @@ countedWordArr.sort(function (a, b) {
     return a[1] - b[1];
 })
 // 6. 콘솔창에 출력한다.
+for (var i = 0; i < countedWordArr.length; i++) {
+    console.log(countedWordArr[i][0], countedWordArr[i][1]);
+}
