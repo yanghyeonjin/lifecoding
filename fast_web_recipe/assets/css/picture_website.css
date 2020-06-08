@@ -48,3 +48,21 @@ body {
     /* 텍스트 밑줄은 커스터마이징이 안되기 때문에, border-bottom을 사용하자.  */
     border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
 }
+#header ul.icons li {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+#header ul.icons li .label {
+    display: none;
+}
+#header ul.icons li a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+}
