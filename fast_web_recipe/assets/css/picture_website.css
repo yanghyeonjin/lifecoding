@@ -2,6 +2,9 @@ body {
     background-image: url('../../images/bg.jpg');
     background-size: cover;
     background-position: center center;
+
+    /* body 아래에 있는 모든 요소에 글꼴 설정 */
+    font-family: 'Source Sans Pro', sans-serif;
 }
 #wrapper {
     border: 5px solid red;
@@ -28,4 +31,20 @@ body {
 #header .avatar img {
     border-radius: 50%;
     display: block;
+}
+#header h1 {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 200;
+}
+#header h1 strong {
+    color: white;
+    font-weight: 200;
+}
+#header h1 a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+
+    /* 텍스트 밑줄은 커스터마이징이 안되기 때문에, border-bottom을 사용하자.  */
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
 }
