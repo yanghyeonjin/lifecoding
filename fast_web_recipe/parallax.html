@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <!-- 웹폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="./assets/css/reset.css">
 
     <style>
@@ -22,6 +25,8 @@
             background-attachment: fixed;
 
             background-size: cover;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 200;
         }
 
         .scene.one {
@@ -50,6 +55,20 @@
         .scene header h1 {
             font-size: 1.7rem;
             margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .scene header h1::after {
+            border-bottom: 1px solid white;
+            width: 8rem;
+
+            /* display block이라고 지정해주고, content 속성 있어야 밑줄 확인 가능 */
+            content: '';
+            display: block;
+
+            /* 가운데 정렬 */
+            margin: 0 auto;
+            margin-top: 1rem;
         }
     </style>
 </head>
