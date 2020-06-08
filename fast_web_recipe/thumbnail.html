@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .thumbnail {
+            width: 200px;
+            height: 200px;
+            margin: 20px;
+            background-image: url('./assets/mountain.jpg');
+            background-size: cover;
+            background-position: center center;
+            box-shadow: 0 10px 3px rgb(165, 163, 163);
+        }
+
+        .thumbnail.round {
+            border-radius: 20px;
+        }
+
+        .thumbnail.circle {
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="thumbnail"></div>
+    <div class="thumbnail round"></div>
+    <div class="thumbnail circle"></div>
+</body>
+
+</html>
