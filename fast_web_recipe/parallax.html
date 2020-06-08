@@ -10,24 +10,68 @@
 
     <style>
         .scene {
-            background-image: url('./assets/parallax/heic0910e.jpg');
-
             /* vh는 뷰포트에 따라 달라짐. */
             /* 100%는 부모에 따라 달라짐. */
             height: 100vh;
 
             /* 부모보다 자식이 더 큰 경우에는 그 자식을 숨겨버린다. */
             overflow: hidden;
+
+            /* ! 핵심 ! */
+            /* 고정된 위치에서 이미지만 바뀜. */
+            background-attachment: fixed;
+
+            background-size: cover;
+        }
+
+        .scene.one {
+            background-image: url('./assets/parallax/heic0910e.jpg');
+        }
+
+        .scene.two {
+            background-image: url('./assets/parallax/heic1501a.jpg');
+        }
+
+        .scene.three {
+            background-image: url('./assets/parallax/heic1608a.jpg');
+        }
+
+        .scene header {
+            max-width: 80%;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            font-size: 1.2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .scene header h1 {
+            font-size: 1.7rem;
+            margin-bottom: 1rem;
         }
     </style>
 </head>
 
 <body>
-    <section class="scene">
+    <section class="scene one">
         <header>
             <h1>Lorem ipsum dolor sit amet.</h1>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur dolores mollitia ut cum, ducimus animi?
         </header>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur dolores mollitia ut cum, ducimus animi?</p>
+    </section>
+    <section class="scene two">
+        <header>
+            <h1>Lorem ipsum dolor sit amet.</h1>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur dolores mollitia ut cum, ducimus animi?
+        </header>
+    </section>
+    <section class="scene three">
+        <header>
+            <h1>Lorem ipsum dolor sit amet.</h1>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur dolores mollitia ut cum, ducimus animi?
+        </header>
     </section>
 </body>
 
