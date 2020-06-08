@@ -7,6 +7,12 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+/* wrapper */
+#wrapper {
+    max-width: 68rem;
+    margin: 5rem auto;
+}
+
 /* header */
 #header {
     text-align: center;
@@ -31,6 +37,7 @@ body {
     color: rgba(255, 255, 255, 0.5);
     font-weight: 200;
     margin-bottom: 1.5rem;
+    line-height: 1.9rem;
 }
 #header h1 strong {
     color: white;
@@ -53,6 +60,9 @@ body {
     justify-content: center;
     align-items: center;
     margin-right: 1rem;
+}
+#header ul.icons li:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 #header ul.icons li .label {
     display: none;
@@ -115,4 +125,11 @@ body {
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
     border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+}
+
+/* for mobile */
+@media screen and (max-width: 480px) {
+    #main .thumbnails {
+        display: block;
+    }
 }
