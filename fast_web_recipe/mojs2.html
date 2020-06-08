@@ -17,25 +17,41 @@
             strokeWidth: { 20: 0 },
             fill: 'transparent',
             left: 0,
-            top: 0
+            top: 0,
+            duration: 300
         });
 
-        first.el.style.border = '1px solid red';
+        const seconds = [];
+        const colors = ['deeppink', 'margenta', 'blue', 'tomato'];
 
-        const second = new mojs.Shape({
-            shape: 'circle',
-            radius: { 0: 20 },
-            stroke: 'deeppink',
-            strokeWidth: { 10: 0 },
-            fill: 'transparent',
-            left: '50%',
-            top: '50%',
-            parent: first.el // 부모를 설정
-        })
+        for (let i = 0; i < 4; i++) {
+            let secondItem = new mojs.Shape({
+                shape: 'circle',
+                radius: {
+                    0: 'rand(10, 30)'
+                },
+                stroke: colors[i],
+                strokeWidth: { 10: 0 },
+                fill: 'transparent',
+                left: '50%',
+                top: '50%',
+                x: 'rand(-50, 50)',
+                y: 'rand(-50, 50)',
+                parent: first.el, // 부모를 설정
+                delay: 100 + (i + 1) * 50
+            })
+            seconds.push(secondItem);
+        }
 
         document.addEventListener('click', function (e) {
-            first.tune({ x: e.pageX, y: e.pageY }).replay();
-            second.replay();
+            first.tune({
+                x: e.pageX,
+                y: e.pageY
+            }).replay();
+
+            for (let i = 0; i < seconds.length; i++) {
+                seconds[i].generate().replay();
+            }
         })
     </script>
 </body>
