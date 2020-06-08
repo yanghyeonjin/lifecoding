@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./assets/css/reset.css">
+
+    <style>
+        .scene {
+            background-image: url('./assets/parallax/heic0910e.jpg');
+
+            /* vh는 뷰포트에 따라 달라짐. */
+            /* 100%는 부모에 따라 달라짐. */
+            height: 100vh;
+
+            /* 부모보다 자식이 더 큰 경우에는 그 자식을 숨겨버린다. */
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="scene">
+        <header>
+            <h1>Lorem ipsum dolor sit amet.</h1>
+        </header>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur dolores mollitia ut cum, ducimus animi?</p>
+    </section>
+</body>
+
+</html>
