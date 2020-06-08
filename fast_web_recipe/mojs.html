@@ -13,7 +13,16 @@
     <!-- 동그라미 모양 -->
     <script>
         new mojs.Shape({
-            shape: 'circle',
+            shape: 'circle', // 모양
+            radius: 100, // 단위: px
+            scale: 2, // 원래 크기에서 변화함
+            left: '50%', // 도형 중심이 왼쪽 어디에 위치할 것인지?
+            top: 100, // 도형 중심이 상단 어디에 위치할 것인지?
+            x: 200, // 현재 위치한 곳에서 x 이동
+            y: -50, // 현재 위치한 곳에서 y 이동
+            fill: 'black', // 배경색
+            stroke: 'red', // 테두리 색
+            strokeWidth: 30, // 테두리 두께 (px)
             isShowStart: true, // 시작했을 때 보여줄 것인지?
         });
     </script>
