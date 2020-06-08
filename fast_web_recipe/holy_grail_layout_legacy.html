@@ -8,7 +8,6 @@
 
         .container {
             border: 5px solid black;
-            min-width: 600px;
         }
 
         /* .container의 모든 직계 자손 */
@@ -50,6 +49,41 @@
 
         .container footer {
             clear: both;
+        }
+
+        /* 반응형 레이아웃을 위해 (화면 크기가 599px보다 같거나 작을 때) */
+        @media (max-width: 599px) {
+            .container .content {
+                padding-left: 0;
+                padding-right: 0;
+                overflow: visible;
+            }
+
+            .container>.content>* {
+                border: 5px solid green;
+                padding-bottom: 0;
+                margin-bottom: -0;
+            }
+
+            .container .content>* {
+                float: none;
+            }
+
+            .container .content main {
+                width: 100%;
+            }
+
+            .container .content nav {
+                width: auto;
+                margin-left: 0;
+                left: 0;
+                position: relative;
+            }
+
+            .container .content aside {
+                width: auto;
+                margin-right: 0;
+            }
         }
     </style>
 </head>
