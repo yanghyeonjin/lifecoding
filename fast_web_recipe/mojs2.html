@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/@mojs/core"></script>
+    <script>
+        const first = new mojs.Shape({
+            shape: 'circle',
+            radius: { 0: 40 },
+            stroke: 'cyan',
+            strokeWidth: { 20: 0 },
+            fill: 'transparent',
+            left: 0,
+            top: 0
+        });
+
+        first.el.style.border = '1px solid red';
+
+        const second = new mojs.Shape({
+            shape: 'circle',
+            radius: { 0: 20 },
+            stroke: 'deeppink',
+            strokeWidth: { 10: 0 },
+            fill: 'transparent',
+            left: '50%',
+            top: '50%',
+            parent: first.el // 부모를 설정
+        })
+
+        document.addEventListener('click', function (e) {
+            first.tune({ x: e.pageX, y: e.pageY }).replay();
+            second.replay();
+        })
+    </script>
+</body>
+
+</html>
