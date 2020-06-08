@@ -1,0 +1,75 @@
+<html>
+
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            border: 5px solid black;
+        }
+
+        /* .container의 모든 직계 자손 */
+        .container>* {
+            border: 5px solid red;
+        }
+
+        .container .content {
+            padding-left: 200px;
+            padding-right: 150px;
+        }
+
+        .container>.content>* {
+            border: 5px solid green;
+        }
+
+        .container .content>* {
+            float: left;
+        }
+
+        .container .content main {
+            width: 100%;
+        }
+
+        .container .content nav {
+            width: 200px;
+            margin-left: -100%;
+            left: -200px;
+            position: relative;
+        }
+
+        .container .content aside {
+            width: 150px;
+            margin-right: -150px;
+        }
+
+        .container footer {
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>HEADER</h1>
+        </header>
+        <section class="content">
+            <main>
+                MAIN(CENTER)
+            </main>
+            <nav>
+                NAV(LEFT)
+            </nav>
+            <aside>
+                ASIDE(RIGTH)
+            </aside>
+        </section>
+        <footer>
+            FOOTER
+        </footer>
+    </div>
+</body>
+
+</html>
