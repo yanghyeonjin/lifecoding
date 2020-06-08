@@ -7,25 +7,42 @@
     <title>Document</title>
 
     <style>
-        input[type="checkbox"] {
+        .tree input[type="checkbox"] {
             display: none;
         }
 
         /* check가 된 checkbox 이후에 등장하는 [ul 선택자] */
-        input[type="checkbox"]:checked~ul {
+        .tree input[type="checkbox"]:checked~ul {
             display: none;
+        }
+
+        .tree,
+        .tree ul {
+            list-style: none;
+            padding-left: 20px;
         }
     </style>
 </head>
 
 <body>
-    <input type="checkbox" id="root">
-    <label for="root">ROOT</label>
-    <ul>
-        <li>node 1</li>
-    </ul>
-    <ul>
-        <li>node 1</li>
+    <ul class="tree">
+        <li>
+            <input type="checkbox" id="root">
+            <label for="root">ROOT</label>
+            <ul>
+                <li><a href="https://opentutorials.org">node 1</a></li>
+                <li><a href="https://opentutorials.org">node 2</a></li>
+                <li>
+                    <input type="checkbox" id="node3">
+                    <label for="node3">node 3</label>
+                    <ul>
+                        <li><a href="https://opentutorials.org">node 3-1</a></li>
+                        <li><a href="https://opentutorials.org">node 3-2</a></li>
+                        <li><a href="https://opentutorials.org">node 3-3</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
     </ul>
 </body>
 
