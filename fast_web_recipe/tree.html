@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <link rel="stylesheet" href="./assets/tree_fontello/css/fontello.css">
+
     <style>
+        .tree {
+            color: #393939;
+        }
+
         .tree input[type="checkbox"] {
             display: none;
         }
@@ -16,10 +22,45 @@
             display: none;
         }
 
+        /* 체크박스가 체크 되었을 때 바로 뒤에 있는 label에 대해서 */
+        .tree input[type="checkbox"]:checked+label::before {
+            content: '\f255';
+            font-family: fontello;
+        }
+
         .tree,
         .tree ul {
             list-style: none;
-            padding-left: 20px;
+            padding-left: 17px;
+        }
+
+        .tree a {
+            text-decoration: none;
+            color: #393939;
+        }
+
+        /* a 태그 앞에 문자 생성 */
+        .tree a::before {
+            content: '\e800';
+            font-family: fontello;
+        }
+
+        .tree label::before {
+            content: '\f256';
+            font-family: fontello;
+        }
+
+        /* .tree 밑에 있는 모든 요소들 중에 ::before에 해당하는 것 */
+        .tree *::before {
+            width: 17px;
+            height: 17px;
+
+            /* inline 속성에서는 width가 적용되지 않기 때문에, inline-block으로 change */
+            display: inline-block;
+        }
+
+        .tree label {
+            cursor: pointer;
         }
     </style>
 </head>
