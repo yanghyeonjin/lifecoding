@@ -1,0 +1,41 @@
+@import '../css/reset.css';
+
+body {
+    background-image: url('https://source.unsplash.com/random');
+    background-size: cover;
+    min-height: 100vh;
+}
+
+article {
+    background-color: rgba(212, 164, 164, 0.5);
+    color: black;
+    max-width: 20rem;
+    position: fixed;
+
+    /* 세로 중앙 배치 */
+    top: 50%;
+    transform: translateY(-50%);
+    /* 세로 중앙 배치 */
+
+    font-size: 1rem;
+    padding: 0.2rem;
+    font-weight: 200;
+}
+
+.control {
+    background-color: rgba(155, 144, 144, 0.527);
+    padding: 2rem;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+.control ul li {
+    display: inline-block;
+    padding: 0 1rem;
+}
+
+.control nav a {
+    color: white;
+    text-decoration: none;
+}
