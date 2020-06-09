@@ -1,5 +1,9 @@
 @import '../css/reset.css';
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-image: url('https://source.unsplash.com/random');
     background-size: cover;
@@ -29,13 +33,16 @@ article {
     left: 0;
     bottom: 0;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .control ul li {
     display: inline-block;
     padding: 0 1rem;
 }
 
-.control nav a {
+.control a {
     color: white;
     text-decoration: none;
 }

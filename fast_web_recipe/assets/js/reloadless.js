@@ -14,4 +14,13 @@ $(document).ready(function () {
     $(window).on('popstate', function (e) {
         $('article').load(location.href + ' article>.content');
     })
+
+    const audio = new Audio('./assets/Groove.mp3');
+
+    $(document).on('click', '.control .player .play', function (e) {
+        audio.play();
+    })
+    $(document).on('click', '.control .player .pause', function (e) {
+        audio.pause();
+    })
 })
