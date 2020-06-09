@@ -1,4 +1,5 @@
 @import '../css/reset.css';
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300&display=swap');
 
 * {
     box-sizing: border-box;
@@ -8,6 +9,8 @@ body {
     background-image: url('https://source.unsplash.com/random');
     background-size: cover;
     min-height: 100vh;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 200;
 }
 
 article {
@@ -22,13 +25,13 @@ article {
     /* 세로 중앙 배치 */
 
     font-size: 1rem;
-    padding: 0.2rem;
+    padding: 0.5rem;
     font-weight: 200;
 }
 
 .control {
     background-color: rgba(155, 144, 144, 0.527);
-    padding: 2rem;
+    padding: 1rem;
     position: fixed;
     left: 0;
     bottom: 0;
@@ -45,4 +48,13 @@ article {
 .control a {
     color: white;
     text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.control a:hover {
+    color: black;
+}
+
+.control .player a span {
+    display: none;
 }
