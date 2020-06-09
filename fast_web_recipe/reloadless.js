@@ -9,4 +9,9 @@ $(document).ready(function () {
         // article 아래 내용이 .content 태그로 바뀜.
         $('article').load(e.target.href + ' article>.content');
     })
+
+    // back
+    $(window).on('popstate', function (e) {
+        $('article').load(location.href + ' article>.content');
+    })
 })
