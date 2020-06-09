@@ -107,6 +107,7 @@ public/
 
 # secret key
 secret_key.js
+fast_web_recipe/google-oauth-client-secret.json
 
 #sessions
 sessions/
