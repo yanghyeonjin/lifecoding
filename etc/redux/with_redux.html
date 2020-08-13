@@ -16,10 +16,23 @@
     <body>
         <div id="red"></div>
         <script>
+            // 특정 액션에 대한 로직의 정의
+            // dispatch가 실행되었을 때 호출되도록 약속되어있다.
+            // state: 이전 state, action: dispatch를 통해 넘어온 액션객체
             function reducer(state, action) {
                 if (state === undefined) {
-                    return { color: 'red' }; // 초기 state 값
+                    // 초기 state 값
+                    return { color: 'red' };
                 }
+
+                // 액션에 대한 로직 정의
+                let newState;
+
+                if (action.type === 'CHANGE_COLOR') {
+                    newState = Object.assign({}, state, { color: 'red' }); // state 불변성 유지
+                }
+
+                return newState;
             }
 
             const store = Redux.createStore(reducer);
@@ -30,9 +43,9 @@
                 <div class="container" id="component_red" style="background-color:${state.color}">
                     <h1>red</h1>
                     <input type="button" value="fire" onclick="
-                    document.querySelector('#component_red').style.backgroundColor = 'red';
-                    document.querySelector('#component_green').style.backgroundColor = 'red';
-                    document.querySelector('#component_blue').style.backgroundColor = 'red';
+                        store.dispatch({
+                            type: 'CHANGE_COLOR', color: 'red'
+                        })
                     ">
                 </div>
                 `;
