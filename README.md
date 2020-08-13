@@ -40,6 +40,7 @@
 ```
 📁react
     📁react-app
+    📁react-redux
 ```
 
 ## etc
