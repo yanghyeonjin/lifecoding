@@ -3,7 +3,13 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <title>Redux Basic</title>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"
+            integrity="sha512-P36ourTueX/PrXrD4Auc1kVLoTE7bkWrIrkaM0IG2X3Fd90LFgTRogpZzNBssay0XOXhrIgudf4wFeftdsPDiQ=="
+            crossorigin="anonymous"
+        ></script>
     </head>
     <body>
         <div id="subject"></div>
@@ -12,6 +18,19 @@
         <div id="content"></div>
 
         <script>
+            // Redux
+            function reducer(state, action) {
+                if (state === undefined) {
+                    return {
+                        contents: [
+                            { id: 1, title: 'HTML', desc: 'HTML is ...' },
+                            { id: 2, title: 'CSS', desc: 'CSS is ...' },
+                        ],
+                    };
+                }
+            }
+            const store = Redux.createStore(reducer);
+
             // title
             function subject() {
                 document.querySelector('#subject').innerHTML = `
@@ -21,21 +40,29 @@
                 </header>
                 `;
             }
-            subject();
 
             // 목록
+            // TOC: table of content
             function TOC() {
-                // TOC: table of content
+                const state = store.getState();
+
+                let i = 0;
+                let liTags = '';
+                while (i < state.contents.length) {
+                    liTags += `
+                        <li><a href="${state.contents[i].id}.html">${state.contents[i].title}</a></li>
+                    `;
+                    i = i + 1;
+                }
+
                 document.querySelector('#toc').innerHTML = `
                 <nav>
                     <ol>
-                        <li><a href="1.html">HTML</a></li>
-                        <li><a href="2.html">CSS</a></li>
+                        ${liTags}
                     </ol>
                 </nav>
                 `;
             }
-            TOC();
 
             // 컨트롤 버튼들
             function control() {
@@ -46,7 +73,6 @@
                 </ul>
                 `;
             }
-            control();
 
             // 본문 내용
             function content() {
@@ -57,6 +83,10 @@
                 </article>
                 `;
             }
+
+            subject();
+            TOC();
+            control();
             content();
         </script>
     </body>
