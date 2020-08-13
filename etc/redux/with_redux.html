@@ -15,6 +15,8 @@
     </head>
     <body>
         <div id="red"></div>
+        <div id="blue"></div>
+        <div id="green"></div>
         <script>
             // 특정 액션에 대한 로직의 정의
             // dispatch가 실행되었을 때 호출되도록 약속되어있다.
@@ -29,16 +31,18 @@
                 let newState;
 
                 if (action.type === 'CHANGE_COLOR') {
-                    newState = Object.assign({}, state, { color: 'red' }); // state 불변성 유지
+                    newState = Object.assign({}, state, {
+                        color: action.color,
+                    }); // state 불변성 유지
                 }
 
                 return newState;
             }
 
             const store = Redux.createStore(reducer);
-            const state = store.getState();
 
             function red() {
+                const state = store.getState();
                 document.querySelector('#red').innerHTML = `
                 <div class="container" id="component_red" style="background-color:${state.color}">
                     <h1>red</h1>
@@ -50,8 +54,40 @@
                 </div>
                 `;
             }
-
+            store.subscribe(red); // state가 바뀔때마다 red 함수가 호출됨.
             red();
+
+            function blue() {
+                const state = store.getState();
+                document.querySelector('#blue').innerHTML = `
+                <div class="container" id="component_blue" style="background-color:${state.color}">
+                    <h1>blue</h1>
+                    <input type="button" value="fire" onclick="
+                        store.dispatch({
+                            type: 'CHANGE_COLOR', color: 'blue'
+                        })
+                    ">
+                </div>
+                `;
+            }
+            store.subscribe(blue); // state가 바뀔때마다 blue 함수가 호출됨.
+            blue();
+
+            function green() {
+                const state = store.getState();
+                document.querySelector('#green').innerHTML = `
+                <div class="container" id="component_green" style="background-color:${state.color}">
+                    <h1>green</h1>
+                    <input type="button" value="fire" onclick="
+                        store.dispatch({
+                            type: 'CHANGE_COLOR', color: 'green'
+                        })
+                    ">
+                </div>
+                `;
+            }
+            store.subscribe(green); // state가 바뀔때마다 green 함수가 호출됨.
+            green();
         </script>
     </body>
 </html>
