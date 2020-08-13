@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": "6wCou1lC",
+      "email": "egoing777@gmail.com",
+      "password": "$2a$10$45MbCVbEQPsLToNIsVHguOFbUF0rpz3ojvRnmWTLyCL0xUs391d0a",
+      "displayName": "egoing"
+    },
+    {
+      "id": "eYHprCPJ",
+      "email": "guswls7081@gmail.com",
+      "googleId": "101942259293929337737",
+      "displayName": "YangHyeonjin",
+      "password": "$2a$10$cMBI/oSty6eDTt40pOk9geGE9qpBV7XJO5.tYiBO0/1Jl1QHzj5VO"
+    },
+    {
+      "id": "0KPi_9Xl",
+      "email": "guswls7081@naver.com",
+      "facebookId": "473561773561726",
+      "displayName": "yanghyeonjin",
+      "password": "$2a$10$JgYKqh3nq//AE6s.Lt8jhOAD.n8kqvBx10VS496PBbx80yOGzdfFS"
+    }
+  ],
+  "topics": []
+}
