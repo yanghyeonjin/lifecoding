@@ -22,8 +22,8 @@
             function reducer(state, action) {
                 if (state === undefined) {
                     return {
-                        mode: 'read',
-                        selectedId: 1,
+                        mode: 'welcome',
+                        selectedId: null,
                         contents: [
                             { id: 1, title: 'HTML', desc: 'HTML is ...' },
                             { id: 2, title: 'CSS', desc: 'CSS is ...' },
@@ -35,6 +35,7 @@
                 if (action.type === 'SELECT') {
                     newState = Object.assign({}, state, {
                         selectedId: action.id,
+                        mode: 'read',
                     });
                 } else if (action.type === 'CREATE') {
                     const newContents = state.contents.concat(); // 배열 복제
@@ -55,12 +56,19 @@
                     });
                 } else if (action.type === 'CHANGE_MODE') {
                     // 모드 변경
-                    if (action.mode === 'create') {
-                        // 만들기 모드로 변경하세요
-                        newState = Object.assign({}, state, {
-                            mode: 'create',
-                        });
-                    }
+                    newState = Object.assign({}, state, {
+                        mode: action.mode,
+                    });
+                } else if (action.type === 'DELETE') {
+                    // selectedId가 아닌 항목만 추출 -> selectedId가 삭제된 것 처럼 보이게 할 수 있음.
+                    const newContents = state.contents.filter(
+                        (content) => content.id != state.selectedId
+                    );
+
+                    newState = Object.assign({}, state, {
+                        mode: 'welcome',
+                        contents: newContents,
+                    });
                 }
 
                 // 새로운 state 리턴
@@ -107,16 +115,37 @@
 
             // 컨트롤 버튼들
             function control() {
-                document.querySelector('#control').innerHTML = `
-                <ul>
-                    <li><a href="/create" onclick="
-                        event.preventDefault();
-                        const action = {type: 'CHANGE_MODE', mode: 'create'};
-                        store.dispatch(action);
-                        ">create</a></li>
-                    <li><input type="button" value="delete" /></li>
-                </ul>
-                `;
+                const state = store.getState();
+                let controlHtml;
+
+                // 읽기 모드일 때에만 delete 버튼 보이도록
+                if (state.mode === 'read') {
+                    controlHtml = `
+                    <ul>
+                        <li><a href="/create" onclick="
+                            event.preventDefault();
+                            const action = {type: 'CHANGE_MODE', mode: 'create'};
+                            store.dispatch(action);
+                            ">create</a></li>
+                        <li><input type="button" value="delete" onclick="
+                            const action = {type: 'DELETE'}
+                            store.dispatch(action);
+                            " /></li>
+                    </ul>
+                    `;
+                } else {
+                    controlHtml = `
+                    <ul>
+                        <li><a href="/create" onclick="
+                            event.preventDefault();
+                            const action = {type: 'CHANGE_MODE', mode: 'create'};
+                            store.dispatch(action);
+                            ">create</a></li>
+                    </ul>
+                    `;
+                }
+
+                document.querySelector('#control').innerHTML = controlHtml;
             }
 
             // 본문 내용
@@ -165,9 +194,21 @@
                                     <textarea name="desc" placeholder="desc"></textarea>
                                 </p>
                                 <p>
-                                    <input type="submit">    
+                                    <a href="" onclick="
+                                    event.preventDefault();
+                                    const action = {type: 'CHANGE_MODE', mode: 'welcome'};
+                                    store.dispatch(action);
+                                    ">돌아가기</a>
+                                    <input type="submit">
                                 </p>
                             </form>
+                        </article>
+                    `;
+                } else if (state.mode === 'welcome') {
+                    contentHtml = `
+                        <article>
+                            <h2>Welcome!!</h2>
+                            <p>Hello, Redux!!!</p>
                         </article>
                     `;
                 }
@@ -179,6 +220,7 @@
             // state가 바뀌면 UI 갱신되도록
             store.subscribe(content);
             store.subscribe(TOC);
+            store.subscribe(control);
 
             subject();
             TOC();
