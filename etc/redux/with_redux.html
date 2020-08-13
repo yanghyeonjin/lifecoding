@@ -39,7 +39,12 @@
                 return newState;
             }
 
-            const store = Redux.createStore(reducer);
+            // 웹 서버 안에 있어야 redux 크롬 확장프로그램 실행됨.
+            const store = Redux.createStore(
+                reducer,
+                window.__REDUX_DEVTOOLS_EXTENSION__ &&
+                    window.__REDUX_DEVTOOLS_EXTENSION__()
+            );
 
             function red() {
                 const state = store.getState();
