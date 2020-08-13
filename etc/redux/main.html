@@ -22,6 +22,7 @@
             function reducer(state, action) {
                 if (state === undefined) {
                     return {
+                        mode: 'read',
                         selectedId: 1,
                         contents: [
                             { id: 1, title: 'HTML', desc: 'HTML is ...' },
@@ -35,8 +36,34 @@
                     newState = Object.assign({}, state, {
                         selectedId: action.id,
                     });
+                } else if (action.type === 'CREATE') {
+                    const newContents = state.contents.concat(); // 배열 복제
+                    const nextId = newContents.length + 1; // 새로 추가되는 항목의 아이디
+
+                    // 복제한 배열에 새로운 항목 정보 push
+                    newContents.push({
+                        id: nextId,
+                        title: action.title,
+                        desc: action.desc,
+                    });
+
+                    // state 복사
+                    newState = Object.assign({}, state, {
+                        contents: newContents,
+                        mode: 'read', // 글 생성 후 다시 읽기 모드
+                        selectedId: nextId, // 생성한 항목을 바로 보여주기
+                    });
+                } else if (action.type === 'CHANGE_MODE') {
+                    // 모드 변경
+                    if (action.mode === 'create') {
+                        // 만들기 모드로 변경하세요
+                        newState = Object.assign({}, state, {
+                            mode: 'create',
+                        });
+                    }
                 }
 
+                // 새로운 state 리턴
                 return newState;
             }
             const store = Redux.createStore(reducer);
@@ -82,7 +109,11 @@
             function control() {
                 document.querySelector('#control').innerHTML = `
                 <ul>
-                    <li><a href="/create">create</a></li>
+                    <li><a href="/create" onclick="
+                        event.preventDefault();
+                        const action = {type: 'CHANGE_MODE', mode: 'create'};
+                        store.dispatch(action);
+                        ">create</a></li>
                     <li><input type="button" value="delete" /></li>
                 </ul>
                 `;
@@ -91,29 +122,63 @@
             // 본문 내용
             function content() {
                 const state = store.getState();
+                let contentHtml = '';
 
-                let i = 0;
-                let aTitle, aDesc;
-                while (i < state.contents.length) {
-                    if (state.contents[i].id === state.selectedId) {
-                        aTitle = state.contents[i].title;
-                        aDesc = state.contents[i].desc;
-                        break;
+                if (state.mode === 'read') {
+                    // 읽기모드
+                    let i = 0;
+                    let aTitle, aDesc;
+                    while (i < state.contents.length) {
+                        if (state.contents[i].id === state.selectedId) {
+                            aTitle = state.contents[i].title;
+                            aDesc = state.contents[i].desc;
+                            break;
+                        }
+
+                        i = i + 1;
                     }
 
-                    i = i + 1;
+                    contentHtml = `
+                        <article>
+                            <h2>${aTitle}</h2>
+                            <p>${aDesc}</p>
+                        </article>
+                    `;
+                } else if (state.mode === 'create') {
+                    // 만들기 모드
+                    contentHtml = `
+                        <article>
+                            <form onsubmit="
+                                event.preventDefault();
+                                const title = this.title.value;
+                                const desc = this.desc.value;
+                                store.dispatch({
+                                    type: 'CREATE',
+                                    title: title,
+                                    desc: desc
+                                });
+                            ">
+                                <p>
+                                    <input type="text" name="title" placeholder="title">
+                                </p>
+                                <p>
+                                    <textarea name="desc" placeholder="desc"></textarea>
+                                </p>
+                                <p>
+                                    <input type="submit">    
+                                </p>
+                            </form>
+                        </article>
+                    `;
                 }
 
-                document.querySelector('#content').innerHTML = `
-                <article>
-                    <h2>${aTitle}</h2>
-                    <p>${aDesc}</p>
-                </article>
-                `;
+                document.querySelector('#content').innerHTML = contentHtml;
             }
 
             // redux subscribe
-            store.subscribe(content); // state가 바뀌면 UI 갱신되도록
+            // state가 바뀌면 UI 갱신되도록
+            store.subscribe(content);
+            store.subscribe(TOC);
 
             subject();
             TOC();
