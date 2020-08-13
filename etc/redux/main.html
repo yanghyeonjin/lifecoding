@@ -22,7 +22,7 @@
             function reducer(state, action) {
                 if (state === undefined) {
                     return {
-                        selected_id: null,
+                        selectedId: 1,
                         contents: [
                             { id: 1, title: 'HTML', desc: 'HTML is ...' },
                             { id: 2, title: 'CSS', desc: 'CSS is ...' },
@@ -33,9 +33,11 @@
                 let newState = {};
                 if (action.type === 'SELECT') {
                     newState = Object.assign({}, state, {
-                        selected_id: action.id,
+                        selectedId: action.id,
                     });
                 }
+
+                return newState;
             }
             const store = Redux.createStore(reducer);
 
@@ -88,13 +90,30 @@
 
             // 본문 내용
             function content() {
+                const state = store.getState();
+
+                let i = 0;
+                let aTitle, aDesc;
+                while (i < state.contents.length) {
+                    if (state.contents[i].id === state.selectedId) {
+                        aTitle = state.contents[i].title;
+                        aDesc = state.contents[i].desc;
+                        break;
+                    }
+
+                    i = i + 1;
+                }
+
                 document.querySelector('#content').innerHTML = `
                 <article>
-                    <h2>HTML</h2>
-                    <p>HTML is ...</p>
+                    <h2>${aTitle}</h2>
+                    <p>${aDesc}</p>
                 </article>
                 `;
             }
+
+            // redux subscribe
+            store.subscribe(content); // state가 바뀌면 UI 갱신되도록
 
             subject();
             TOC();
