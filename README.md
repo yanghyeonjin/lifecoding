@@ -49,6 +49,5 @@
 
 ```
 📁etc
-    📁semantic_ui
     📁redux
 ```
